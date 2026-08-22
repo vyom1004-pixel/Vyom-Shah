@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Qualifications</title>
+  <style>
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0a0a0a;
+      color: #00ffcc;
+      margin: 0;
+    }
+    header {
+      background: linear-gradient(90deg, #111, #222);
+      text-align: center;
+      padding: 40px;
+      border-bottom: 2px solid #00ffcc;
+      animation: flicker 2s infinite alternate;
+    }
+    header h1 {
+      color: #00ffcc;
+      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
+      animation: glow 1.5s ease-in-out infinite alternate;
+    }
+    header p {
+      color: #ff00ff;
+      text-shadow: 0 0 8px #ff00ff;
+    }
+    section {
+      padding: 30px;
+      max-width: 900px;
+      margin: auto;
+      animation: fadeIn 2s ease-in;
+    }
+    h2 {
+      color: #ff00ff;
+      border-bottom: 1px solid #444;
+      padding-bottom: 5px;
+      text-shadow: 0 0 8px #ff00ff;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 10px 0;
+      padding: 8px;
+      background: #111;
+      border-left: 3px solid #ff00ff;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    li:hover {
+      transform: scale(1.05);
+      background: #222;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      color: #888;
+      font-size: 14px;
+    }
+
+    /* Animations */
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc; }
+      to { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
+    }
+    @keyframes flicker {
+      0% { opacity: 1; }
+      45% { opacity: 0.8; }
+      55% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vyom — Qualifications</h1>
+    <p>B.Tech ECE Student | Aspiring Ethical Hacker</p>
+  </header>
+
+  <section>
+    <h2>Education</h2>
+    <ul>
+      <li>B.Tech in Electronics & Communication Engineering, SCET Surat</li>
+      <li>Minor in VLSI (planned)</li>
+      <li>Interested in IIT Madras BSc in Data Science</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <ul>
+      <li>Programming: Python, Java, C++</li>
+      <li>Cybersecurity: Basic Kali Linux usage</li>
+      <li>Web Development basics</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Goals</h2>
+    <ul>
+      <li>Learn ethical hacking (OSCP-level)</li>
+      <li>Complete certifications: Security+, CEH, OSCP, CHFI</li>
+      <li>Build career combining ECE, VLSI, and cybersecurity</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>© 2026 Vyom | Cyberpunk Resume</p>
+  </footer>
+</body>
+</html>
