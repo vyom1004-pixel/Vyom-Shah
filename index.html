@@ -10,6 +10,35 @@
       color: #00ffcc;
       margin: 0;
     }
+
+    /* Splash screen styles */
+    #splash {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #000;
+      color: #0ff;
+      cursor: pointer;
+    }
+    .glow {
+      font-size: 3em;
+      font-family: 'Orbitron', sans-serif;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+      animation: pulse 2s infinite;
+    }
+    .tap-text {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #888;
+    }
+    @keyframes pulse {
+      0% { text-shadow: 0 0 10px #0ff; }
+      50% { text-shadow: 0 0 20px #0ff, 0 0 40px #0ff; }
+      100% { text-shadow: 0 0 10px #0ff; }
+    }
+
     header {
       background: linear-gradient(90deg, #111, #222);
       text-align: center;
@@ -54,11 +83,11 @@
       background: #222;
     }
     footer {
-        text-align: center;
-        padding: 20px;
-        background: #111;
-        color: #888;
-        font-size: 14px;
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      color: #888;
+      font-size: 14px;
     }
 
     /* Animations */
@@ -79,47 +108,65 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Vyom — Qualifications</h1>
-    <p>B.Tech ECE Student | Aspiring Ethical Hacker</p>
-  </header>
+  <!-- Splash Screen -->
+  <div id="splash">
+    <h1 class="glow">Vyom Rupeshkumar Shah</h1>
+    <p class="tap-text">(Tap anywhere to enter)</p>
+  </div>
 
-  <section>
-    <h2>Education</h2>
-    <ul>
-      <li>B.Tech in Electronics & Communication Engineering, SCET Surat</li>
-      <li>Minor in VLSI (planned)</li>
-      <li>Interested in IIT Madras BSc in Data Science</li>
-    </ul>
-  </section>
+  <!-- Main Content (hidden initially) -->
+  <div id="main" style="display:none;">
+    <header>
+      <h1>Vyom — Qualifications</h1>
+      <p>B.Tech ECE Student | Aspiring Ethical Hacker</p>
+    </header>
 
-  <section>
-    <h2>Skills</h2>
-    <ul>
-      <li>Programming: Python, Java, C++</li>
-      <li>Cybersecurity: Basic Kali Linux usage</li>
-      <li>Web Development basics</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Education</h2>
+      <ul>
+        <li>B.Tech in Electronics & Communication Engineering, SCET Surat</li>
+        <li>Minor in VLSI (planned)</li>
+        <li>Interested in IIT Madras BSc in Data Science</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Goals</h2>
-    <ul>
-      <li>Learn ethical hacking (OSCP-level)</li>
-      <li>Complete certifications: Security+, CEH, OSCP, CHFI</li>
-      <li>Build career combining ECE, VLSI, and cybersecurity</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Skills</h2>
+      <ul>
+        <li>Programming: Python, Java, C++</li>
+        <li>Cybersecurity: Basic Kali Linux usage</li>
+        <li>Web Development basics</li>
+      </ul>
+    </section>
 
-  <footer>
-    <p>© 2026 Vyom | Cyberpunk Resume</p>
+    <section>
+      <h2>Goals</h2>
+      <ul>
+        <li>Learn ethical hacking (OSCP-level)</li>
+        <li>Complete certifications: Security+, CEH, OSCP, CHFI</li>
+        <li>Build career combining ECE, VLSI, and cybersecurity</li>
+      </ul>
+    </section>
+
+    <footer>
+      <p>© 2026 Vyom | Cyberpunk Resume</p>
       <p>
-            <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" style="color:#00ffcc; text-decoration:none;">
-                Connect with me on LinkedIn
-            </a>
+        <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" style="color:#00ffcc; text-decoration:none;">
+          Connect with me on LinkedIn
+        </a>
       </p>
-  </footer>
+    </footer>
+  </div>
+
+  <!-- Script to toggle splash -->
+  <script>
+    document.getElementById("splash").addEventListener("click", function() {
+      document.getElementById("splash").style.display = "none";
+      document.getElementById("main").style.display = "block";
+    });
+  </script>
 </body>
 </html>
+
 
 
