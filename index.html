@@ -1,628 +1,658 @@
 <!DOCTYPE html>
 <html lang="en" class="dark scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vyom Rupeshkumar Shah | Cyberpunk Portfolio</title>
-  
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            cyberDark: '#07090f',
-            cyberCard: '#0d111a',
-            neonCyan: '#00ffcc',
-            neonPink: '#ff00ff',
-            neonGreen: '#00ff66',
-            matrixDim: '#003311'
-          },
-          fontFamily: {
-            orbitron: ['Orbitron', 'sans-serif'],
-            mono: ['Courier New', 'Courier', 'monospace']
-          },
-          boxShadow: {
-            'neon-cyan': '0 0 20px rgba(0, 255, 204, 0.4)',
-            'neon-pink': '0 0 20px rgba(255, 0, 255, 0.4)',
-            'neon-green': '0 0 20px rgba(0, 255, 102, 0.4)',
-            'inner-glow': 'inset 0 0 15px rgba(0, 255, 204, 0.2)'
-          }
-        }
-      }
-    }
-  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vyom Rupeshkumar Shah | Cyberpunk Portfolio</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { darkMode:'class', theme:{ extend:{
+    colors:{ cyberDark:'#07090f', cyberCard:'#0d111a', neonCyan:'#00ffcc', neonPink:'#ff00ff', neonGreen:'#00ff66' },
+    fontFamily:{ orbitron:['Orbitron','sans-serif'], mono:['Courier New','monospace'] },
+    boxShadow:{ 'neon-cyan':'0 0 20px rgba(0,255,204,.4)', 'neon-pink':'0 0 20px rgba(255,0,255,.4)', 'inner-glow':'inset 0 0 15px rgba(0,255,204,.2)' }
+  }}}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  *{cursor:none !important;}
+  body{font-family:'Share Tech Mono',monospace; background:#07090f; color:#00ffcc; overflow-x:hidden;}
+  h1,h2,h3,h4,.font-orbitron{font-family:'Orbitron',sans-serif;}
+  ::-webkit-scrollbar{width:8px;} ::-webkit-scrollbar-track{background:#07090f;}
+  ::-webkit-scrollbar-thumb{background:#00ffcc; border-radius:4px; box-shadow:0 0 10px #00ffcc;}
+  ::-webkit-scrollbar-thumb:hover{background:#ff00ff;}
+  #matrix-canvas{position:fixed; inset:0; z-index:-1; opacity:.18; pointer-events:none;}
+  @keyframes glitch{0%{transform:translate(0)}20%{transform:translate(-2px,2px)}40%{transform:translate(-2px,-2px)}60%{transform:translate(2px,2px)}80%{transform:translate(2px,-2px)}100%{transform:translate(0)}}
+  .glitch-hover:hover{animation:glitch .3s infinite;}
+  @keyframes borderPulse{0%,100%{border-color:rgba(0,255,204,.4); box-shadow:0 0 10px rgba(0,255,204,.2);}50%{border-color:rgba(255,0,255,.8); box-shadow:0 0 25px rgba(255,0,255,.5);}}
+  .cyber-border{border:1px solid rgba(0,255,204,.4); animation:borderPulse 4s infinite;}
+  .scanlines{background:linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,.3) 50%, rgba(0,0,0,.3)); background-size:100% 4px;}
+  .cursor-blink::after{content:'_'; animation:blink 1s infinite;} @keyframes blink{0%,50%{opacity:1;}51%,100%{opacity:0;}}
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  /* ---- screen glitch bursts ---- */
+  @keyframes screenGlitch{
+    0%{ clip-path:inset(0 0 0 0); transform:translate(0); filter:hue-rotate(0deg);}
+    10%{ clip-path:inset(10% 0 60% 0); transform:translate(-6px,0); filter:hue-rotate(30deg);}
+    20%{ clip-path:inset(60% 0 5% 0); transform:translate(6px,0); filter:hue-rotate(-20deg);}
+    30%{ clip-path:inset(20% 0 40% 0); transform:translate(-3px,0);}
+    40%{ clip-path:inset(0 0 0 0); transform:translate(0); filter:hue-rotate(0deg);}
+    100%{ clip-path:inset(0 0 0 0); transform:translate(0);}
+  }
+  body.glitching{animation:screenGlitch .35s steps(2,jump-end);}
 
-  <style>
-    body {
-      font-family: 'Share Tech Mono', monospace;
-      background-color: #07090f;
-      color: #00ffcc;
-      overflow-x: hidden;
-    }
+  /* ---- cursor ---- */
+  #cursor-dot{position:fixed; top:0; left:0; width:8px; height:8px; border-radius:50%; background:#00ffcc; box-shadow:0 0 10px 2px rgba(0,255,204,.9); pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:background .2s,width .2s,height .2s;}
+  #cursor-ring{position:fixed; top:0; left:0; width:32px; height:32px; border-radius:50%; border:1px solid rgba(0,255,204,.6); box-shadow:0 0 15px rgba(255,0,255,.35); pointer-events:none; z-index:9998; transform:translate(-50%,-50%);}
+  #cursor-dot.hovering{background:#ff00ff; width:12px; height:12px; box-shadow:0 0 14px 4px rgba(255,0,255,.9);}
+  #cursor-ring.hovering{width:48px; height:48px; border-color:rgba(255,0,255,.8);}
+  .cursor-particle{position:fixed; top:0; left:0; width:5px; height:5px; border-radius:50%; pointer-events:none; z-index:9997; transform:translate(-50%,-50%); animation:particleFade .8s ease-out forwards;}
+  @keyframes particleFade{0%{opacity:.9; transform:translate(-50%,-50%) scale(1);}100%{opacity:0; transform:translate(-50%,-50%) scale(.2);}}
+  .ping-ring{position:fixed; top:0; left:0; width:10px; height:10px; border-radius:50%; border:1px solid #00ffcc; pointer-events:none; z-index:9996; transform:translate(-50%,-50%); animation:pingOut .7s ease-out forwards;}
+  @keyframes pingOut{to{width:70px; height:70px; opacity:0; border-color:#ff00ff;}}
+  @media (hover:none) and (pointer:coarse){ *{cursor:auto !important;} #cursor-dot,#cursor-ring{display:none;} }
 
-    h1, h2, h3, h4, .font-orbitron {
-      font-family: 'Orbitron', sans-serif;
-    }
+  /* ---- HUD ---- */
+  #hud{position:fixed; top:16px; right:16px; z-index:50; background:rgba(13,17,26,.85); border:1px solid rgba(0,255,204,.35); border-radius:8px; padding:10px 14px; font-size:10px; line-height:1.7; backdrop-filter:blur(6px); box-shadow:0 0 20px rgba(0,255,204,.15); min-width:170px;}
+  #hud .row{display:flex; justify-content:space-between; gap:14px; color:#8fa3ab;}
+  #hud .row span:last-child{color:#00ffcc;}
+  #hud .bar{width:60px; height:4px; background:#111; border-radius:2px; overflow:hidden; display:inline-block; vertical-align:middle;}
+  #hud .bar i{display:block; height:100%; background:linear-gradient(90deg,#00ffcc,#ff00ff);}
+  @media (max-width:768px){ #hud{display:none;} }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #07090f;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #00ffcc;
-      border-radius: 4px;
-      box-shadow: 0 0 10px #00ffcc;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #ff00ff;
-    }
+  /* ---- decrypt text ---- */
+  .decrypt{display:inline-block;}
 
-    /* Matrix Canvas Background */
-    #matrix-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      opacity: 0.18;
-      pointer-events: none;
-    }
+  /* ---- context menu ---- */
+  #ctxmenu{position:fixed; z-index:10000; display:none; background:#0d111a; border:1px solid #00ffcc; border-radius:6px; box-shadow:0 0 25px rgba(0,255,204,.3); min-width:220px; overflow:hidden; font-size:12px;}
+  #ctxmenu .item{padding:10px 16px; display:flex; align-items:center; gap:10px; color:#00ffcc; border-bottom:1px solid rgba(0,255,204,.1);}
+  #ctxmenu .item:last-child{border-bottom:none;}
+  #ctxmenu .item:hover{background:rgba(0,255,204,.12); color:#fff;}
+  #ctxmenu .item i{width:14px; color:#ff00ff;}
 
-    /* Glitch Animation */
-    @keyframes glitch {
-      0% { transform: translate(0) }
-      20% { transform: translate(-2px, 2px) }
-      40% { transform: translate(-2px, -2px) }
-      60% { transform: translate(2px, 2px) }
-      80% { transform: translate(2px, -2px) }
-      100% { transform: translate(0) }
-    }
-    .glitch-hover:hover {
-      animation: glitch 0.3s infinite;
-    }
-
-    /* Neon Border Pulse */
-    @keyframes borderPulse {
-      0%, 100% { border-color: rgba(0, 255, 204, 0.4); box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
-      50% { border-color: rgba(255, 0, 255, 0.8); box-shadow: 0 0 25px rgba(255, 0, 255, 0.5); }
-    }
-    .cyber-border {
-      border: 1px solid rgba(0, 255, 204, 0.4);
-      animation: borderPulse 4s infinite;
-    }
-
-    /* Scanlines effect */
-    .scanlines {
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(255,255,255,0) 50%,
-        rgba(0, 0, 0, 0.3) 50%,
-        rgba(0, 0, 0, 0.3)
-      );
-      background-size: 100% 4px;
-    }
-
-    /* Terminal blinking cursor */
-    .cursor-blink::after {
-      content: '_';
-      animation: blink 1s infinite;
-    }
-    @keyframes blink {
-      0%, 50% { opacity: 1; }
-      51%, 100% { opacity: 0; }
-    }
-  </style>
+  /* ---- root access banner ---- */
+  #rootbanner{position:fixed; inset:0; z-index:10001; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.85); backdrop-filter:blur(4px);}
+  #rootbanner .box{border:1px solid #00ff66; box-shadow:0 0 40px rgba(0,255,102,.5); padding:40px 50px; text-align:center; background:#050705;}
+  #rootbanner h2{color:#00ff66; font-size:28px; text-shadow:0 0 15px #00ff66; margin-bottom:10px;}
+  #rootbanner p{color:#8fa3ab; font-size:12px;}
+</style>
 </head>
 <body class="scanlines relative min-h-screen">
 
-  <canvas id="matrix-canvas"></canvas>
+<canvas id="matrix-canvas"></canvas>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
 
-  <div id="splash" class="fixed inset-0 z-50 bg-[#05070a] flex flex-col justify-center items-center cursor-pointer transition-opacity duration-1000">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,204,0.1)_0%,transparent_70%)]"></div>
-    <div class="text-center px-4 relative z-10">
-      <div class="inline-block mb-4 px-4 py-1 rounded border border-neonCyan/40 bg-neonCyan/10 text-neonCyan text-xs tracking-widest uppercase animate-pulse">
-        [ SECURE CONNECTION ESTABLISHED ]
+<div id="hud">
+  <div class="row"><span>IP</span><span id="hud-ip">10.42.—.—</span></div>
+  <div class="row"><span>PING</span><span id="hud-ping">— ms</span></div>
+  <div class="row"><span>CPU</span><span class="bar"><i id="hud-cpu" style="width:40%"></i></span></div>
+  <div class="row"><span>MEM</span><span class="bar"><i id="hud-mem" style="width:55%"></i></span></div>
+  <div class="row"><span>UPTIME</span><span id="hud-time">00:00:00</span></div>
+</div>
+
+<div id="ctxmenu">
+  <div class="item" data-act="scan"><i class="fa-solid fa-satellite-dish"></i> Scan network</div>
+  <div class="item" data-act="glitch"><i class="fa-solid fa-bolt"></i> Trigger glitch</div>
+  <div class="item" data-act="ip"><i class="fa-solid fa-copy"></i> Copy session ID</div>
+  <div class="item" data-act="root"><i class="fa-solid fa-unlock-keyhole"></i> Attempt root access</div>
+</div>
+
+<div id="rootbanner">
+  <div class="box">
+    <h2>ROOT ACCESS GRANTED</h2>
+    <p>welcome back, operator. all systems nominal.</p>
+  </div>
+</div>
+
+<div id="splash" class="fixed inset-0 z-50 bg-[#05070a] flex flex-col justify-center items-center cursor-pointer transition-opacity duration-1000">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,204,0.1)_0%,transparent_70%)]"></div>
+  <div class="text-center px-4 relative z-10">
+    <div class="inline-block mb-4 px-4 py-1 rounded border border-neonCyan/40 bg-neonCyan/10 text-neonCyan text-xs tracking-widest uppercase animate-pulse">[ SECURE CONNECTION ESTABLISHED ]</div>
+    <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink tracking-wider mb-4 drop-shadow-[0_0_20px_rgba(0,255,204,0.6)]" id="splash-decrypt">VYOM RUPESHKUMAR SHAH</h1>
+    <p class="text-neonPink font-mono text-lg md:text-xl tracking-widest mb-8">&gt; B.Tech ECE | Aspiring Ethical Hacker</p>
+    <div class="inline-flex items-center gap-3 px-8 py-3 rounded-lg bg-cyberCard border border-neonCyan text-neonCyan font-orbitron tracking-widest text-sm shadow-neon-cyan hover:bg-neonCyan hover:text-cyberDark transition-all duration-300">
+      <i class="fa-solid fa-terminal"></i><span>INITIALIZE SYSTEM [ TAP TO ENTER ]</span>
+    </div>
+  </div>
+</div>
+
+<div id="main" class="hidden opacity-0 transition-opacity duration-1000">
+
+  <nav class="sticky top-0 z-40 backdrop-blur-md bg-cyberDark/80 border-b border-neonCyan/30 px-6 py-4">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="#hero" class="flex items-center gap-2 text-neonCyan font-orbitron font-bold text-lg tracking-wider">
+        <i class="fa-solid fa-shield-halved text-neonPink animate-pulse"></i><span>VRS_SEC</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-orbitron">
+        <a href="#about" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> ABOUT</a>
+        <a href="#skills" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> SKILLS & CERTS</a>
+        <a href="#goals" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> GOALS</a>
+        <a href="#terminal" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> TERMINAL</a>
       </div>
-      <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink tracking-wider mb-4 drop-shadow-[0_0_20px_rgba(0,255,204,0.6)]">
-        VYOM RUPESHKUMAR SHAH
-      </h1>
-      <p class="text-neonPink font-mono text-lg md:text-xl tracking-widest mb-8 text-shadow-pink">
-        &gt; B.Tech ECE | Aspiring Ethical Hacker
-      </p>
-      <div class="inline-flex items-center gap-3 px-8 py-3 rounded-lg bg-cyberCard border border-neonCyan text-neonCyan font-orbitron tracking-widest text-sm shadow-neon-cyan hover:bg-neonCyan hover:text-cyberDark transition-all duration-300">
-        <i class="fa-solid fa-terminal"></i>
-        <span>INITIALIZE SYSTEM [ TAP TO ENTER ]</span>
+      <div class="flex items-center gap-4">
+        <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="px-4 py-2 rounded bg-neonCyan/10 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-cyberDark transition-all text-xs font-orbitron flex items-center gap-2 shadow-neon-cyan">
+          <i class="fa-brands fa-linkedin-in"></i><span class="hidden sm:inline">LINKEDIN</span>
+        </a>
+        <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-xl p-2"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-800 flex flex-col gap-3 font-orbitron text-sm">
+      <a href="#about" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> ABOUT</a>
+      <a href="#skills" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> SKILLS & CERTS</a>
+      <a href="#goals" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> GOALS</a>
+      <a href="#terminal" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> TERMINAL</a>
+    </div>
+  </nav>
+
+  <header id="hero" class="relative py-24 px-6 text-center max-w-5xl mx-auto">
+    <div class="absolute inset-0 -z-10 bg-radial from-neonCyan/10 via-transparent to-transparent blur-3xl"></div>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyberCard border border-neonPink/50 text-neonPink text-xs mb-6 shadow-neon-pink">
+      <span class="w-2 h-2 rounded-full bg-neonPink animate-ping"></span>STATUS: READY FOR CYBERSECURITY OPERATIONS
+    </div>
+    <h1 class="text-5xl md:text-7xl font-black text-white mb-6 font-orbitron tracking-tight">
+      <span id="hero-decrypt">VYOM RUPESHKUMAR SHAH</span>
+    </h1>
+    <p class="text-xl md:text-2xl text-neonCyan font-mono mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,255,204,0.4)]">B.Tech ECE Student | Aspiring Ethical Hacker</p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="#skills" class="px-8 py-3 rounded-lg bg-neonCyan text-cyberDark font-orbitron font-bold tracking-wider hover:bg-white hover:shadow-neon-cyan transition-all duration-300">EXPLORE CREDENTIALS</a>
+      <a href="#terminal" class="px-8 py-3 rounded-lg bg-cyberCard border border-neonPink text-neonPink font-orbitron font-bold tracking-wider hover:bg-neonPink hover:text-cyberDark hover:shadow-neon-pink transition-all duration-300">LAUNCH CLI INTERFACE</a>
+    </div>
+    <p class="mt-6 text-[11px] text-gray-500 font-mono">psst — try the ↑ ↑ ↓ ↓ ← → ← → B A konami sequence, or right-click anywhere.</p>
+  </header>
+
+  <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
+    <div class="flex items-center gap-4 mb-10">
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-graduation-cap text-neonCyan"></i> ACADEMIC_MATRIX</h2>
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+        <div class="absolute top-0 right-0 px-3 py-1 bg-neonCyan/10 text-neonCyan text-xs rounded-bl font-orbitron border-l border-b border-neonCyan/30">PRIMARY</div>
+        <div class="text-neonCyan text-3xl mb-4"><i class="fa-solid fa-microchip"></i></div>
+        <h3 class="text-xl font-bold font-orbitron text-white mb-2">SCET Surat</h3>
+        <p class="text-gray-300 text-sm mb-4">B.Tech in Electronics & Communication Engineering (ECE)</p>
+        <div class="text-xs text-neonPink font-mono">[ HARDWARE & SYSTEMS ]</div>
+      </div>
+      <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+        <div class="absolute top-0 right-0 px-3 py-1 bg-neonPink/10 text-neonPink text-xs rounded-bl font-orbitron border-l border-b border-neonPink/30">SPECIALIZATION</div>
+        <div class="text-neonPink text-3xl mb-4"><i class="fa-solid fa-bolt"></i></div>
+        <h3 class="text-xl font-bold font-orbitron text-white mb-2">VLSI Specialization</h3>
+        <p class="text-gray-300 text-sm mb-4">Minor in VLSI Design & Semiconductor engineering (planned)</p>
+        <div class="text-xs text-neonCyan font-mono">[ SILICON ARCHITECTURE ]</div>
+      </div>
+      <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+        <div class="absolute top-0 right-0 px-3 py-1 bg-neonGreen/10 text-neonGreen text-xs rounded-bl font-orbitron border-l border-b border-neonGreen/30">FUTURE_EXPANSION</div>
+        <div class="text-neonGreen text-3xl mb-4"><i class="fa-solid fa-database"></i></div>
+        <h3 class="text-xl font-bold font-orbitron text-white mb-2">IIT Madras</h3>
+        <p class="text-gray-300 text-sm mb-4">Interested in pursuing BSc in Data Science & Programming</p>
+        <div class="text-xs text-neonGreen font-mono">[ ANALYTICS & AI ]</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills" class="py-16 px-6 max-w-5xl mx-auto">
+    <div class="flex items-center gap-4 mb-10">
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-shield-dog text-neonCyan"></i> SKILLS & CREDENTIALS</h2>
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+    </div>
+    <div class="mb-12">
+      <h3 class="text-xl font-orbitron font-semibold text-neonCyan mb-6 flex items-center gap-2"><i class="fa-solid fa-code text-neonPink"></i> TECHNICAL ARSENAL</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-brands fa-python text-2xl text-neonCyan"></i><div><div class="font-bold text-white font-orbitron text-sm">Python</div><div class="text-xs text-gray-400">Scripting & Automation</div></div></div>
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-brands fa-java text-2xl text-neonPink"></i><div><div class="font-bold text-white font-orbitron text-sm">Java</div><div class="text-xs text-gray-400">Object-Oriented Logic</div></div></div>
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-solid fa-c text-2xl text-neonGreen"></i><div><div class="font-bold text-white font-orbitron text-sm">C / C++</div><div class="text-xs text-gray-400">Low-level Systems</div></div></div>
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-solid fa-terminal text-2xl text-neonCyan"></i><div><div class="font-bold text-white font-orbitron text-sm">Kali Linux</div><div class="text-xs text-gray-400">Pentesting OS & Tools</div></div></div>
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-solid fa-globe text-2xl text-neonPink"></i><div><div class="font-bold text-white font-orbitron text-sm">Web Development</div><div class="text-xs text-gray-400">Frontend & Security</div></div></div>
+        <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow"><i class="fa-solid fa-network-wired text-2xl text-neonGreen"></i><div><div class="font-bold text-white font-orbitron text-sm">Nmap / Recon</div><div class="text-xs text-gray-400">Network Discovery</div></div></div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+          <h3 class="text-lg font-orbitron font-bold text-neonCyan flex items-center gap-2"><i class="fa-solid fa-certificate"></i> TryHackMe Modules</h3>
+          <span class="px-2 py-0.5 rounded bg-neonCyan/10 text-neonCyan text-xs">VERIFIED</span>
+        </div>
+        <ul class="space-y-4">
+          <li><button onclick="openCertModal('Linux Basics Certificate','TryHackMe Module Completion - Linux Fundamentals & Command Line Operations')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group"><span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm"><i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Linux Basics Certificate</span><i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i></button></li>
+          <li><button onclick="openCertModal('Nmap Basics Certificate','TryHackMe Module Completion - Network Scanning & Enumeration via Nmap')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group"><span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm"><i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Nmap Basics Certificate</span><i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i></button></li>
+        </ul>
+      </div>
+      <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
+        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+          <h3 class="text-lg font-orbitron font-bold text-neonPink flex items-center gap-2"><i class="fa-solid fa-award"></i> Official Certifications</h3>
+          <span class="px-2 py-0.5 rounded bg-neonPink/10 text-neonPink text-xs">OFFICIAL</span>
+        </div>
+        <ul class="space-y-4">
+          <li><button onclick="openCertModal('Pre Security Pathway','TryHackMe Official Career Pathway - Pre Security (Networking, Web, & OS fundamentals)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group"><span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm"><i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> Pre Security Pathway</span><i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonPink"></i></button></li>
+          <li><button onclick="openCertModal('SOC Analyst Level 1 Certificate','TryHackMe Official Career Pathway - Security Operations Center (SIEM, Threat Intelligence, Incident Response)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group"><span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm"><i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> SOC Analyst Certificate</span><i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i></button></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="goals" class="py-16 px-6 max-w-5xl mx-auto">
+    <div class="flex items-center gap-4 mb-10">
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-bullseye text-neonCyan"></i> MISSION_OBJECTIVES</h2>
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-6xl text-neonCyan/10 font-bold font-orbitron">01</div><div class="text-neonCyan font-orbitron font-bold text-lg mb-3">OSCP Mastery</div><p class="text-gray-300 text-sm">Master advanced penetration testing and ethical hacking up to OSCP-level proficiency through rigorous lab simulations.</p></div>
+      <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-6xl text-neonPink/10 font-bold font-orbitron">02</div><div class="text-neonPink font-orbitron font-bold text-lg mb-3">Industry Certs</div><p class="text-gray-300 text-sm">Acquire premier global security certifications: CompTIA Security+, CEH, OSCP, and CHFI for digital forensics.</p></div>
+      <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden"><div class="absolute -right-4 -bottom-4 text-6xl text-neonGreen/10 font-bold font-orbitron">03</div><div class="text-neonGreen font-orbitron font-bold text-lg mb-3">Cross-Domain Synergy</div><p class="text-gray-300 text-sm">Build a unique professional career combining ECE hardware engineering, VLSI semiconductor design, and cybersecurity.</p></div>
+    </div>
+  </section>
+
+  <section id="terminal" class="py-16 px-6 max-w-5xl mx-auto">
+    <div class="flex items-center gap-4 mb-10">
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-terminal text-neonCyan"></i> SECURE_CLI</h2>
+      <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+    </div>
+    <div class="bg-black border border-neonCyan/60 rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.2)] overflow-hidden">
+      <div class="bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
+        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="ml-4 text-xs text-gray-400 font-mono">vyom@vrs-cyber-terminal:<span id="term-path-head">~</span></span></div>
+        <div class="text-xs text-neonCyan font-orbitron">BASH v5.2 · KALI</div>
+      </div>
+      <div id="terminal-body" class="p-6 font-mono text-sm h-72 overflow-y-auto space-y-2 text-neonCyan">
+        <p class="text-gray-400">System initialization complete. Type <span class="text-neonPink font-bold">help</span> to view available commands.</p>
+      </div>
+      <div class="bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
+        <span id="term-prompt" class="text-neonPink font-bold whitespace-nowrap">vyom@vrs:~$</span>
+        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type a command... try 'help'" autofocus>
+        <button id="terminal-submit" class="px-4 py-1 rounded bg-neonCyan/20 text-neonCyan border border-neonCyan text-xs font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all">EXEC</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="cert-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-center items-center p-4">
+    <div class="bg-cyberCard border border-neonCyan rounded-xl max-w-lg w-full p-6 shadow-neon-cyan relative">
+      <button onclick="closeCertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-neonPink text-xl"><i class="fa-solid fa-xmark"></i></button>
+      <div class="flex items-center gap-3 mb-4 text-neonCyan text-2xl"><i class="fa-solid fa-shield-halved"></i><h3 id="modal-title" class="font-orbitron font-bold text-white text-lg">Certificate Title</h3></div>
+      <p id="modal-desc" class="text-gray-300 text-sm mb-6 bg-black/40 p-4 rounded border border-gray-800 font-mono"></p>
+      <div class="flex justify-end gap-3">
+        <button onclick="closeCertModal()" class="px-4 py-2 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-orbitron text-xs">CLOSE</button>
+        <button onclick="simulateDownload()" class="px-6 py-2 rounded bg-neonCyan text-cyberDark font-orbitron font-bold text-xs hover:bg-white transition-all shadow-neon-cyan">DOWNLOAD VERIFIED PDF</button>
       </div>
     </div>
   </div>
 
-  <div id="main" class="hidden opacity-0 transition-opacity duration-1000">
-    
-    <!-- Navigation Bar -->
-    <nav class="sticky top-0 z-40 backdrop-blur-md bg-cyberDark/80 border-b border-neonCyan/30 px-6 py-4">
-      <div class="max-w-6xl mx-auto flex justify-between items-center">
-        <a href="#hero" class="flex items-center gap-2 text-neonCyan font-orbitron font-bold text-lg tracking-wider">
-          <i class="fa-solid fa-shield-halved text-neonPink animate-pulse"></i>
-          <span>VRS_SEC</span>
-        </a>
-        
-        <div class="hidden md:flex items-center gap-8 text-sm font-orbitron">
-          <a href="#about" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> ABOUT</a>
-          <a href="#skills" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> SKILLS & CERTS</a>
-          <a href="#goals" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> GOALS</a>
-          <a href="#terminal" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> TERMINAL</a>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="px-4 py-2 rounded bg-neonCyan/10 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-cyberDark transition-all text-xs font-orbitron flex items-center gap-2 shadow-neon-cyan">
-            <i class="fa-brands fa-linkedin-in"></i>
-            <span class="hidden sm:inline">LINKEDIN</span>
-          </a>
-          <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-xl p-2 focus:outline-none">
-            <i class="fa-solid fa-bars"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu Dropdown -->
-      <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-800 flex flex-col gap-3 font-orbitron text-sm">
-        <a href="#about" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> ABOUT</a>
-        <a href="#skills" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> SKILLS & CERTS</a>
-        <a href="#goals" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> GOALS</a>
-        <a href="#terminal" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> TERMINAL</a>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header id="hero" class="relative py-24 px-6 text-center max-w-5xl mx-auto">
-      <div class="absolute inset-0 -z-10 bg-radial from-neonCyan/10 via-transparent to-transparent blur-3xl"></div>
-      
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyberCard border border-neonPink/50 text-neonPink text-xs mb-6 shadow-neon-pink">
-        <span class="w-2 h-2 rounded-full bg-neonPink animate-ping"></span>
-        STATUS: READY FOR CYBERSECURITY OPERATIONS
-      </div>
-
-      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 font-orbitron tracking-tight">
-        VYOM RUPESHKUMAR <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-neonPink">SHAH</span>
-      </h1>
-      
-      <p class="text-xl md:text-2xl text-neonCyan font-mono mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,255,204,0.4)]">
-        B.Tech ECE Student | Aspiring Ethical Hacker
-      </p>
-
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="#skills" class="px-8 py-3 rounded-lg bg-neonCyan text-cyberDark font-orbitron font-bold tracking-wider hover:bg-white hover:shadow-neon-cyan transition-all duration-300">
-          EXPLORE CREDENTIALS
-        </a>
-        <a href="#terminal" class="px-8 py-3 rounded-lg bg-cyberCard border border-neonPink text-neonPink font-orbitron font-bold tracking-wider hover:bg-neonPink hover:text-cyberDark hover:shadow-neon-pink transition-all duration-300">
-          LAUNCH CLI INTERFACE
-        </a>
-      </div>
-    </header>
-
-    <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
-          <i class="fa-solid fa-graduation-cap text-neonCyan"></i> ACADEMIC_MATRIX
-        </h2>
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Education Card 1 -->
-        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
-          <div class="absolute top-0 right-0 px-3 py-1 bg-neonCyan/10 text-neonCyan text-xs rounded-bl font-orbitron border-l border-b border-neonCyan/30">PRIMARY</div>
-          <div class="text-neonCyan text-3xl mb-4"><i class="fa-solid fa-microchip"></i></div>
-          <h3 class="text-xl font-bold font-orbitron text-white mb-2">SCET Surat</h3>
-          <p class="text-gray-300 text-sm mb-4">B.Tech in Electronics & Communication Engineering (ECE)</p>
-          <div class="text-xs text-neonPink font-mono">[ HARDWARE & SYSTEMS ]</div>
-        </div>
-
-        <!-- Education Card 2 -->
-        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
-          <div class="absolute top-0 right-0 px-3 py-1 bg-neonPink/10 text-neonPink text-xs rounded-bl font-orbitron border-l border-b border-neonPink/30">SPECIALIZATION</div>
-          <div class="text-neonPink text-3xl mb-4"><i class="fa-solid fa-bolt"></i></div>
-          <h3 class="text-xl font-bold font-orbitron text-white mb-2">VLSI Specialization</h3>
-          <p class="text-gray-300 text-sm mb-4">Minor in VLSI Design & Semiconductor engineering (planned)</p>
-          <div class="text-xs text-neonCyan font-mono">[ SILICON ARCHITECTURE ]</div>
-        </div>
-
-        <!-- Education Card 3 -->
-        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
-          <div class="absolute top-0 right-0 px-3 py-1 bg-neonGreen/10 text-neonGreen text-xs rounded-bl font-orbitron border-l border-b border-neonGreen/30">FUTURE_EXPANSION</div>
-          <div class="text-neonGreen text-3xl mb-4"><i class="fa-solid fa-database"></i></div>
-          <h3 class="text-xl font-bold font-orbitron text-white mb-2">IIT Madras</h3>
-          <p class="text-gray-300 text-sm mb-4">Interested in pursuing BSc in Data Science & Programming</p>
-          <div class="text-xs text-neonGreen font-mono">[ ANALYTICS & AI ]</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="skills" class="py-16 px-6 max-w-5xl mx-auto">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
-          <i class="fa-solid fa-shield-dog text-neonCyan"></i> SKILLS & CREDENTIALS
-        </h2>
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-      </div>
-
-      <!-- Technical Skills Grid -->
-      <div class="mb-12">
-        <h3 class="text-xl font-orbitron font-semibold text-neonCyan mb-6 flex items-center gap-2">
-          <i class="fa-solid fa-code text-neonPink"></i> TECHNICAL ARSENAL
-        </h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-brands fa-python text-2xl text-neonCyan"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">Python</div>
-              <div class="text-xs text-gray-400">Scripting & Automation</div>
-            </div>
-          </div>
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-brands fa-java text-2xl text-neonPink"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">Java</div>
-              <div class="text-xs text-gray-400">Object-Oriented Logic</div>
-            </div>
-          </div>
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-solid fa-c text-2xl text-neonGreen"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">C / C++</div>
-              <div class="text-xs text-gray-400">Low-level Systems</div>
-            </div>
-          </div>
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-solid fa-terminal text-2xl text-neonCyan"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">Kali Linux</div>
-              <div class="text-xs text-gray-400">Pentesting OS & Tools</div>
-            </div>
-          </div>
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-solid fa-globe text-2xl text-neonPink"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">Web Development</div>
-              <div class="text-xs text-gray-400">Frontend & Security</div>
-            </div>
-          </div>
-          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
-            <i class="fa-solid fa-network-wired text-2xl text-neonGreen"></i>
-            <div>
-              <div class="font-bold text-white font-orbitron text-sm">Nmap / Recon</div>
-              <div class="text-xs text-gray-400">Network Discovery</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Certificates Blocks -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- TryHackMe Module Completion Certificates -->
-        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
-            <h3 class="text-lg font-orbitron font-bold text-neonCyan flex items-center gap-2">
-              <i class="fa-solid fa-certificate"></i> TryHackMe Modules
-            </h3>
-            <span class="px-2 py-0.5 rounded bg-neonCyan/10 text-neonCyan text-xs">VERIFIED</span>
-          </div>
-          <ul class="space-y-4">
-            <li>
-              <button onclick="openCertModal('Linux Basics Certificate', 'TryHackMe Module Completion - Linux Fundamentals & Command Line Operations')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group">
-                <span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm">
-                  <i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Linux Basics Certificate
-                </span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
-              </button>
-            </li>
-            <li>
-              <button onclick="openCertModal('Nmap Basics Certificate', 'TryHackMe Module Completion - Network Scanning & Enumeration via Nmap')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group">
-                <span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm">
-                  <i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Nmap Basics Certificate
-                </span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Official TryHackMe Certificates -->
-        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
-          <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
-            <h3 class="text-lg font-orbitron font-bold text-neonPink flex items-center gap-2">
-              <i class="fa-solid fa-award"></i> Official Certifications
-            </h3>
-            <span class="px-2 py-0.5 rounded bg-neonPink/10 text-neonPink text-xs">OFFICIAL</span>
-          </div>
-          <ul class="space-y-4">
-            <li>
-              <button onclick="openCertModal('Pre Security Pathway', 'TryHackMe Official Career Pathway - Pre Security (Networking, Web, & OS fundamentals)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group">
-                <span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm">
-                  <i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> Pre Security Pathway
-                </span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonPink"></i>
-              </button>
-            </li>
-            <li>
-              <button onclick="openCertModal('SOC Analyst Level 1 Certificate', 'TryHackMe Official Career Pathway - Security Operations Center (SIEM, Threat Intelligence, Incident Response)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group">
-                <span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm">
-                  <i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> SOC Analyst Certificate
-                </span>
-                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
-              </button>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-    </section>
-
-    <section id="goals" class="py-16 px-6 max-w-5xl mx-auto">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
-          <i class="fa-solid fa-bullseye text-neonCyan"></i> MISSION_OBJECTIVES
-        </h2>
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
-          <div class="absolute -right-4 -bottom-4 text-6xl text-neonCyan/10 font-bold font-orbitron">01</div>
-          <div class="text-neonCyan font-orbitron font-bold text-lg mb-3">OSCP Mastery</div>
-          <p class="text-gray-300 text-sm">Master advanced penetration testing and ethical hacking up to OSCP-level proficiency through rigorous lab simulations.</p>
-        </div>
-
-        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
-          <div class="absolute -right-4 -bottom-4 text-6xl text-neonPink/10 font-bold font-orbitron">02</div>
-          <div class="text-neonPink font-orbitron font-bold text-lg mb-3">Industry Certs</div>
-          <p class="text-gray-300 text-sm">Acquire premier global security certifications: CompTIA Security+, CEH, OSCP, and CHFI for digital forensics.</p>
-        </div>
-
-        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
-          <div class="absolute -right-4 -bottom-4 text-6xl text-neonGreen/10 font-bold font-orbitron">03</div>
-          <div class="text-neonGreen font-orbitron font-bold text-lg mb-3">Cross-Domain Synergy</div>
-          <p class="text-gray-300 text-sm">Build a unique professional career combining ECE hardware engineering, VLSI semiconductor design, and cybersecurity.</p>
-        </div>
-      </div>
-    </section>
-
-    <section id="terminal" class="py-16 px-6 max-w-5xl mx-auto">
-      <div class="flex items-center gap-4 mb-10">
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
-          <i class="fa-solid fa-terminal text-neonCyan"></i> SECURE_CLI
-        </h2>
-        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
-      </div>
-
-      <div class="bg-black border border-neonCyan/60 rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.2)] overflow-hidden">
-        <!-- Terminal Header -->
-        <div class="bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-red-500"></div>
-            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div class="w-3 h-3 rounded-full bg-green-500"></div>
-            <span class="ml-4 text-xs text-gray-400 font-mono">vyom@vrs-cyber-terminal:~</span>
-          </div>
-          <div class="text-xs text-neonCyan font-orbitron">BASH v5.2</div>
-        </div>
-
-        <!-- Terminal Body -->
-        <div id="terminal-body" class="p-6 font-mono text-sm h-72 overflow-y-auto space-y-2 text-neonCyan">
-          <p class="text-gray-400">System initialization complete. Type <span class="text-neonPink font-bold">help</span> to view available commands.</p>
-          <div class="command-output"></div>
-        </div>
-
-        <!-- Terminal Input Prompt -->
-        <div class="bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
-          <span class="text-neonPink font-bold">&gt;</span>
-          <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type command here..." autofocus>
-          <button id="terminal-submit" class="px-4 py-1 rounded bg-neonCyan/20 text-neonCyan border border-neonCyan text-xs font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all">EXEC</button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Certificate Preview Modal -->
-    <div id="cert-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-center items-center p-4">
-      <div class="bg-cyberCard border border-neonCyan rounded-xl max-w-lg w-full p-6 shadow-neon-cyan relative animate-[fadeIn_0.3s_ease-out]">
-        <button onclick="closeCertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-neonPink text-xl">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-        <div class="flex items-center gap-3 mb-4 text-neonCyan text-2xl">
-          <i class="fa-solid fa-shield-halved"></i>
-          <h3 id="modal-title" class="font-orbitron font-bold text-white text-lg">Certificate Title</h3>
-        </div>
-        <p id="modal-desc" class="text-gray-300 text-sm mb-6 bg-black/40 p-4 rounded border border-gray-800 font-mono"></p>
-        <div class="flex justify-end gap-3">
-          <button onclick="closeCertModal()" class="px-4 py-2 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-orbitron text-xs">CLOSE</button>
-          <button onclick="simulateDownload()" class="px-6 py-2 rounded bg-neonCyan text-cyberDark font-orbitron font-bold text-xs hover:bg-white transition-all shadow-neon-cyan">DOWNLOAD VERIFIED PDF</button>
-        </div>
-      </div>
+  <footer class="bg-cyberCard border-t border-neonCyan/30 py-8 px-6 text-center">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="text-gray-400 text-sm font-mono">&copy; 2026 Vyom Rupeshkumar Shah | Cyberpunk Portfolio</div>
+      <div class="flex items-center gap-6"><a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan hover:text-neonPink transition-colors flex items-center gap-2 text-sm font-orbitron"><i class="fa-brands fa-linkedin-in"></i> LinkedIn Profile</a></div>
     </div>
+  </footer>
+</div>
 
-    <!-- Footer -->
-    <footer class="bg-cyberCard border-t border-neonCyan/30 py-8 px-6 text-center">
-      <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="text-gray-400 text-sm font-mono">
-          &copy; 2026 Vyom Rupeshkumar Shah | Cyberpunk Portfolio
-        </div>
-        <div class="flex items-center gap-6">
-          <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan hover:text-neonPink transition-colors flex items-center gap-2 text-sm font-orbitron">
-            <i class="fa-brands fa-linkedin-in"></i> LinkedIn Profile
-          </a>
-        </div>
-      </div>
-    </footer>
+<script>
+// ===== Matrix Rain =====
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+addEventListener('resize', resizeCanvas); resizeCanvas();
+const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-/<>[]{}';
+const alphabet = katakana + latin;
+const fontSize = 16;
+let columns = canvas.width / fontSize;
+const rainDrops = []; for(let x=0;x<columns;x++) rainDrops[x]=1;
+let matrixColor = '#00ffcc';
+function drawMatrix(){
+  ctx.fillStyle = 'rgba(7,9,15,0.08)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = matrixColor; ctx.font = fontSize+'px monospace';
+  for(let i=0;i<rainDrops.length;i++){
+    const text = alphabet.charAt(Math.floor(Math.random()*alphabet.length));
+    ctx.fillText(text, i*fontSize, rainDrops[i]*fontSize);
+    if(rainDrops[i]*fontSize > canvas.height && Math.random() > 0.975) rainDrops[i]=0;
+    rainDrops[i]++;
+  }
+}
+setInterval(drawMatrix, 30);
 
-  </div>
+// ===== Splash =====
+const splash = document.getElementById('splash');
+const main = document.getElementById('main');
+splash.addEventListener('click', () => {
+  splash.classList.add('opacity-0');
+  setTimeout(() => { splash.style.display='none'; main.classList.remove('hidden'); setTimeout(()=>main.classList.remove('opacity-0'),50); }, 1000);
+});
 
-  <script>
-    // Matrix Rain Effect
-    const canvas = document.getElementById('matrix-canvas');
-    const ctx = canvas.getContext('2d');
+// ===== Mobile menu =====
+document.getElementById('mobile-menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
+document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden')));
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+// ===== Cert modal =====
+function openCertModal(t,d){ document.getElementById('modal-title').innerText=t; document.getElementById('modal-desc').innerText=d; document.getElementById('cert-modal').classList.remove('hidden'); }
+function closeCertModal(){ document.getElementById('cert-modal').classList.add('hidden'); }
+function simulateDownload(){ alert('Secure Certificate Download Initiated. Verified Digital Signature Validated.'); closeCertModal(); }
+
+// ===== Decrypt / scramble text effect =====
+const SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*<>/\\[]{}01';
+function decryptText(el, finalText, speed=28){
+  let iterations = 0;
+  const totalIter = finalText.length * 3;
+  const interval = setInterval(() => {
+    el.textContent = finalText.split('').map((ch,i) => {
+      if(ch === ' ') return ' ';
+      const progress = iterations - i*3;
+      if(progress > 3) return finalText[i];
+      if(progress > 0) return SCRAMBLE_CHARS[Math.floor(Math.random()*SCRAMBLE_CHARS.length)];
+      return SCRAMBLE_CHARS[Math.floor(Math.random()*SCRAMBLE_CHARS.length)];
+    }).join('');
+    iterations++;
+    if(iterations > totalIter){ el.textContent = finalText; clearInterval(interval); }
+  }, speed);
+}
+window.addEventListener('load', () => {
+  const heroEl = document.getElementById('hero-decrypt');
+  setTimeout(() => decryptText(heroEl, 'VYOM RUPESHKUMAR SHAH', 22), 1300);
+});
+
+// ===== Terminal =====
+const terminalInput = document.getElementById('terminal-input');
+const terminalBody = document.getElementById('terminal-body');
+const terminalSubmit = document.getElementById('terminal-submit');
+const termPrompt = document.getElementById('term-prompt');
+const termPathHead = document.getElementById('term-path-head');
+function escapeHtml(text){ const map={'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}; return text.replace(/[&<>"']/g, m=>map[m]); }
+function typeLine(el, text, speed=10){
+  return new Promise(resolve => {
+    let i=0; const iv = setInterval(() => { el.innerHTML += text[i]; i++; if(i>=text.length){ clearInterval(iv); resolve(); } }, speed);
+  });
+}
+function pre(html){ const d = document.createElement('pre'); d.className='text-gray-300 whitespace-pre-wrap leading-snug'; d.innerHTML = html; return d; }
+
+// ---- virtual filesystem ----
+const vfs = { type:'dir', children:{
+  'about.txt': { type:'file', content:'Vyom Rupeshkumar Shah — B.Tech ECE student at SCET Surat.\nAspiring ethical hacker, VLSI enthusiast.' },
+  'skills.txt': { type:'file', content:'Python, Java, C/C++, Kali Linux, Nmap, Web Dev, SOC fundamentals.' },
+  'goals.txt': { type:'file', content:'OSCP-level proficiency -> Security+ -> CEH -> CHFI -> ECE/security cross-domain career.' },
+  'certs': { type:'dir', children:{
+      'linux_basics.cert': { type:'file', content:'TryHackMe :: Linux Basics — Fundamentals & CLI operations. STATUS: VERIFIED' },
+      'nmap_basics.cert': { type:'file', content:'TryHackMe :: Nmap Basics — Network scanning & enumeration. STATUS: VERIFIED' },
+      'pre_security.cert': { type:'file', content:'TryHackMe :: Pre Security Pathway — Networking, Web, OS fundamentals. STATUS: OFFICIAL' },
+      'soc_analyst.cert': { type:'file', content:'TryHackMe :: SOC Analyst L1 — SIEM, threat intel, incident response. STATUS: OFFICIAL' },
+  }},
+  'projects': { type:'dir', children:{
+      'readme.md': { type:'file', content:'# projects\nportfolio.html — this very site, built with a matrix rain and way too many easter eggs.' },
+  }},
+  'secrets.txt': { type:'file', content:'nice try. there is nothing here except this message and my growing respect for your curiosity.' },
+}};
+let cwd = vfs;
+let pathParts = ['~'];
+function pathStr(){ return pathParts.length===1 ? '~' : pathParts.join('/'); }
+function refreshPrompt(){
+  const p = pathStr();
+  termPrompt.textContent = `vyom@vrs:${p}$`;
+  termPathHead.textContent = p;
+}
+function resolveFromRoot(){
+  let node = vfs;
+  for(let i=1;i<pathParts.length;i++) node = node.children[pathParts[i]];
+  return node;
+}
+
+// ---- fun tool banners ----
+const toolBanner = {
+  nmap: (arg) => {
+    const target = arg || '192.168.1.1';
+    return `Starting Nmap 7.94 ( https://nmap.org ) at ${new Date().toUTCString()}\nNmap scan report for ${target}\nHost is up (0.0${Math.floor(Math.random()*9)}s latency).\n\nPORT     STATE  SERVICE\n22/tcp   open   ssh\n80/tcp   open   http\n443/tcp  open   https\n3306/tcp closed mysql\n\nNmap done: 1 IP address (1 host up) scanned in 1.4${Math.floor(Math.random()*9)} seconds`;
+  },
+  hydra: () => `Hydra v9.5 starting...\n[DATA] max 16 tasks per target\n[ATTEMPT] target ${['10.0.0.','192.168.0.'][Math.floor(Math.random()*2)]}${Math.floor(Math.random()*255)}\ndemo mode — no real targets are attacked from this site.`,
+  sqlmap: () => `sqlmap/1.8 — automatic SQL injection tool\n[!] legal disclaimer: for authorized testing only.\ndemo mode — this terminal is decorative, no requests leave your browser.`,
+  msfconsole: () => `      =[ metasploit v6.4 ]\n+ -- --=[ 2400+ exploits | 1200+ payloads ]\n\nmsf6 > demo mode — full framework not loaded in a portfolio site :)`,
+  aircrack: () => `Aircrack-ng 1.7\nReading packets... done.\ndemo mode — no wireless interface available in-browser.`,
+};
+
+async function executeCommand(){
+  const raw = terminalInput.value.trim();
+  if(!raw) return;
+  const cmd = raw.toLowerCase();
+  const [base, ...args] = cmd.split(' ');
+  const arg = args.join(' ').trim();
+
+  const pUser = document.createElement('p');
+  pUser.innerHTML = `<span class="text-neonPink">vyom@vrs:${pathStr()}$</span> ${escapeHtml(raw)}`;
+  terminalBody.appendChild(pUser);
+
+  const pRes = document.createElement('p');
+  pRes.className = "text-gray-300";
+
+  switch(base){
+    case 'help':
+      terminalBody.appendChild(pre(
+`<span class="text-neonCyan">-- profile --</span>   about, skills, certs, goals, contact, whoami
+<span class="text-neonCyan">-- filesystem --</span> pwd, ls, cd &lt;dir&gt;, cat &lt;file&gt;, mkdir, touch
+<span class="text-neonCyan">-- system --</span>     uname -a, neofetch, ifconfig, ps, top, date, history, man &lt;cmd&gt;
+<span class="text-neonCyan">-- network --</span>    ping &lt;host&gt;, nmap &lt;target&gt;, netstat
+<span class="text-neonCyan">-- kali tools --</span> hydra, sqlmap, msfconsole, aircrack
+<span class="text-neonCyan">-- fun --</span>        sudo, hack, matrix, clear, exit`));
+      break;
+
+    case 'about': pRes.textContent = vfs.children['about.txt'].content; terminalBody.appendChild(pRes); break;
+    case 'skills': pRes.textContent = vfs.children['skills.txt'].content; terminalBody.appendChild(pRes); break;
+    case 'certs': pRes.textContent = 'ls certs/ for the full list, or: cat certs/soc_analyst.cert'; terminalBody.appendChild(pRes); break;
+    case 'goals': pRes.textContent = vfs.children['goals.txt'].content; terminalBody.appendChild(pRes); break;
+    case 'contact':
+      pRes.innerHTML = 'LinkedIn: <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan underline">linkedin.com/in/vyom-shah-a7093a37b/</a>';
+      terminalBody.appendChild(pRes); break;
+    case 'whoami': terminalBody.appendChild(pRes); await typeLine(pRes, 'vyom :: ece_student :: aspiring_pentester :: root@vrs-sec'); break;
+
+    // ---- filesystem ----
+    case 'pwd': pRes.textContent = pathStr() === '~' ? '/home/vyom' : `/home/vyom/${pathParts.slice(1).join('/')}`; terminalBody.appendChild(pRes); break;
+    case 'ls': {
+      const kids = cwd.children || {};
+      const names = Object.keys(kids).map(k => kids[k].type==='dir' ? `<span class="text-neonCyan">${k}/</span>` : k);
+      pRes.innerHTML = names.length ? names.join('&nbsp;&nbsp;&nbsp;') : '(empty)';
+      terminalBody.appendChild(pRes); break;
     }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-/<>[]{}';
-    const alphabet = katakana + latin;
-
-    const fontSize = 16;
-    let columns = canvas.width / fontSize;
-    const rainDrops = [];
-
-    for (let x = 0; x < columns; x++) {
-      rainDrops[x] = 1;
-    }
-
-    function drawMatrix() {
-      ctx.fillStyle = 'rgba(7, 9, 15, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = '#00ffcc';
-      ctx.font = fontSize + 'px monospace';
-
-      for (let i = 0; i < rainDrops.length; i++) {
-        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          rainDrops[i] = 0;
-        }
-        rainDrops[i]++;
+    case 'cd': {
+      if(!arg || arg==='~'){ cwd=vfs; pathParts=['~']; refreshPrompt(); pRes.textContent=''; }
+      else if(arg==='..'){
+        if(pathParts.length>1){ pathParts.pop(); cwd=resolveFromRoot(); refreshPrompt(); }
+        pRes.textContent='';
+      } else if(cwd.children && cwd.children[arg] && cwd.children[arg].type==='dir'){
+        cwd = cwd.children[arg]; pathParts.push(arg); refreshPrompt(); pRes.textContent='';
+      } else {
+        pRes.textContent = `cd: ${arg}: No such directory`;
       }
+      if(pRes.textContent) terminalBody.appendChild(pRes); break;
     }
-    setInterval(drawMatrix, 30);
-
-    // Splash Screen Interaction
-    const splash = document.getElementById('splash');
-    const main = document.getElementById('main');
-
-    splash.addEventListener('click', () => {
-      splash.classList.add('opacity-0');
-      setTimeout(() => {
-        splash.style.display = 'none';
-        main.classList.remove('hidden');
-        setTimeout(() => main.classList.remove('opacity-0'), 50);
-      }, 1000);
-    });
-
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileLinks = document.querySelectorAll('.mobile-link');
-
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-
-    mobileLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-      });
-    });
-
-    // Certificate Modal Functions
-    function openCertModal(title, desc) {
-      document.getElementById('modal-title').innerText = title;
-      document.getElementById('modal-desc').innerText = desc;
-      document.getElementById('cert-modal').classList.remove('hidden');
+    case 'cat': {
+      if(!arg){ pRes.textContent = 'usage: cat <file>'; }
+      else if(cwd.children && cwd.children[arg] && cwd.children[arg].type==='file'){ pRes.textContent = cwd.children[arg].content; }
+      else { pRes.textContent = `cat: ${arg}: No such file`; }
+      terminalBody.appendChild(pRes); break;
     }
+    case 'mkdir': pRes.textContent = arg ? `directory '${arg}' created (session only)` : 'usage: mkdir <name>'; terminalBody.appendChild(pRes); break;
+    case 'touch': pRes.textContent = arg ? `file '${arg}' created (session only)` : 'usage: touch <name>'; terminalBody.appendChild(pRes); break;
 
-    function closeCertModal() {
-      document.getElementById('cert-modal').classList.add('hidden');
-    }
+    // ---- system ----
+    case 'uname': pRes.textContent = 'Linux vrs-sec 6.6.9-amd64 #1 SMP x86_64 GNU/Linux'; terminalBody.appendChild(pRes); break;
+    case 'neofetch':
+      terminalBody.appendChild(pre(
+`<span class="text-neonCyan">        _,met$$$$$gg.
+     ,g$$$$$$$$$$$$$$$P.
+   ,g$$P"     """Y$$.".
+  ,$$P'              \`$$$.
+','$$P       ,ggs.     \`$$b:
+'d$$'     ,$P"'   .    $$$
+$$P      d$'     ,    $$$P
+$$:      $$.   -    ,d$$'
+$$;      Y$b._   _,d$P'
+Y$$.    \`.\`"Y$$$$P"'
+\`$$b      "-.__
+ \`Y$$
+  \`Y$$.
+    \`$$b.
+      \`Y$$b.
+         \`"Y$b._
+             \`""" </span>  <span class="text-neonPink">vyom@vrs-sec</span>
+             -----------
+             OS: Kali GNU/Linux (portfolio edition)
+             Host: vrs-cyber-terminal
+             Kernel: 6.6.9-amd64
+             Shell: bash 5.2
+             Terminal: xterm-neon
+             CPU: fake-i9 @ ${(20+Math.random()*60).toFixed(0)}% load
+             Mem: ${(35+Math.random()*40).toFixed(0)}% used`));
+      break;
+    case 'ifconfig':
+    case 'ip':
+      pRes.innerHTML = `eth0: flags=4163  mtu 1500<br>&nbsp;&nbsp;inet ${document.getElementById('hud-ip')?.textContent || '10.0.0.1'}  netmask 255.255.255.0<br>&nbsp;&nbsp;ether de:ad:be:ef:${Math.floor(Math.random()*99)}:${Math.floor(Math.random()*99)}  txqueuelen 1000`;
+      terminalBody.appendChild(pRes); break;
+    case 'ps':
+      terminalBody.appendChild(pre('PID   CMD\n1     /sbin/init\n842   bash\n1337  matrix_rain.js\n2048  cursor_tracker.js\n4096  this_portfolio --watch'));
+      break;
+    case 'top':
+      terminalBody.appendChild(pre(`PID  USER   %CPU  %MEM  COMMAND\n1337 vyom   ${(10+Math.random()*30).toFixed(1)}  4.2   matrix_rain\n2048 vyom   ${(1+Math.random()*8).toFixed(1)}   1.1   cursor_fx\n4096 vyom   ${(2+Math.random()*10).toFixed(1)}  6.7   chrome`));
+      break;
+    case 'date': pRes.textContent = new Date().toString(); terminalBody.appendChild(pRes); break;
+    case 'history': pRes.textContent = cmdHistory.length ? cmdHistory.join('\n') : '(no commands yet)'; terminalBody.appendChild(pRes); break;
+    case 'man':
+      pRes.textContent = arg ? `${arg}(1) — no manual entry, but try running it, it probably works.` : 'usage: man <command>';
+      terminalBody.appendChild(pRes); break;
 
-    function simulateDownload() {
-      alert('Secure Certificate Download Initiated. Verified Digital Signature Validated.');
-      closeCertModal();
-    }
+    // ---- network ----
+    case 'ping': terminalBody.appendChild(pRes); await typeLine(pRes, `pong! ${arg || 'localhost'} — latency: ${(Math.random()*20+8).toFixed(1)}ms`); break;
+    case 'nmap': terminalBody.appendChild(pre(toolBanner.nmap(arg))); break;
+    case 'netstat': terminalBody.appendChild(pre('Proto  Local Address       State\ntcp    0.0.0.0:22          LISTEN\ntcp    0.0.0.0:443         ESTABLISHED')); break;
 
-    // Interactive Terminal CLI Logic
-    const terminalInput = document.getElementById('terminal-input');
-    const terminalBody = document.getElementById('terminal-body');
-    const terminalSubmit = document.getElementById('terminal-submit');
+    // ---- kali tools (decorative) ----
+    case 'hydra': terminalBody.appendChild(pre(toolBanner.hydra())); break;
+    case 'sqlmap': terminalBody.appendChild(pre(toolBanner.sqlmap())); break;
+    case 'msfconsole': case 'metasploit': terminalBody.appendChild(pre(toolBanner.msfconsole())); break;
+    case 'aircrack': case 'aircrack-ng': terminalBody.appendChild(pre(toolBanner.aircrack())); break;
 
-    function executeCommand() {
-      const cmd = terminalInput.value.trim().toLowerCase();
-      if (!cmd) return;
-
-      const pUser = document.createElement('p');
-      pUser.innerHTML = `<span class="text-neonPink">vyom@vrs-cyber-terminal:~$</span> ${escapeHtml(cmd)}`;
-      terminalBody.appendChild(pUser);
-
-      const pRes = document.createElement('p');
-      pRes.className = "text-gray-300";
-
-      switch (cmd) {
-        case 'help':
-          pRes.innerHTML = 'Available commands: <span class="text-neonCyan">about</span>, <span class="text-neonCyan">skills</span>, <span class="text-neonCyan">certs</span>, <span class="text-neonCyan">goals</span>, <span class="text-neonCyan">contact</span>, <span class="text-neonCyan">clear</span>';
-          break;
-        case 'about':
-          pRes.innerHTML = 'Vyom Rupeshkumar Shah - B.Tech ECE Student at SCET Surat. Aspiring Ethical Hacker and VLSI enthusiast.';
-          break;
-        case 'skills':
-          pRes.innerHTML = 'Programming: Python, Java, C++ | Security: Kali Linux, Nmap, Web Security, SOC Analyst.';
-          break;
-        case 'certs':
-          pRes.innerHTML = 'TryHackMe: Linux Basics, Nmap Basics, Pre Security Pathway, SOC Analyst Level 1.';
-          break;
-        case 'goals':
-          pRes.innerHTML = 'Objectives: OSCP-level hacking proficiency, Security+, CEH, CHFI certifications, and cross-domain ECE/Cybersecurity career.';
-          break;
-        case 'contact':
-          pRes.innerHTML = 'LinkedIn: <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan underline">linkedin.com/in/vyom-shah-a7093a37b/</a>';
-          break;
-        case 'clear':
-          terminalBody.innerHTML = '<p class="text-gray-400">Terminal reset. Type <span class="text-neonPink font-bold">help</span> for commands.</p>';
-          terminalInput.value = '';
-          return;
-        default:
-          pRes.innerHTML = `Command not recognized: "${escapeHtml(cmd)}". Type <span class="text-neonPink">help</span> for assistance.`;
-      }
-
+    // ---- fun ----
+    case 'sudo': triggerGlitch(); terminalBody.appendChild(pRes); await typeLine(pRes, 'nice try. permission denied — but I like the confidence.'); break;
+    case 'hack':
       terminalBody.appendChild(pRes);
-      terminalInput.value = '';
-      terminalBody.scrollTop = terminalBody.scrollHeight;
-    }
+      pRes.textContent = 'Initiating breach sequence';
+      for(let i=0;i<3;i++){ await new Promise(r=>setTimeout(r,300)); pRes.textContent += '.'; }
+      await new Promise(r=>setTimeout(r,300));
+      pRes.textContent = 'access denied — this machine only hacks résumés. try the konami code instead 😉';
+      break;
+    case 'matrix':
+      matrixColor = matrixColor === '#00ffcc' ? '#ff00ff' : '#00ffcc';
+      pRes.textContent = `matrix stream recolored to ${matrixColor}`;
+      terminalBody.appendChild(pRes); break;
+    case 'clear':
+      terminalBody.innerHTML = '<p class="text-gray-400">Terminal reset. Type <span class="text-neonPink font-bold">help</span> for commands.</p>';
+      terminalInput.value=''; return;
+    case 'exit':
+      pRes.textContent = 'logout\nConnection to vrs-sec closed. reconnecting...';
+      terminalBody.appendChild(pRes);
+      setTimeout(() => {
+        cwd = vfs; pathParts=['~']; refreshPrompt();
+        terminalBody.innerHTML = '<p class="text-gray-400">Session restored. Type <span class="text-neonPink font-bold">help</span> for commands.</p>';
+      }, 1400);
+      break;
 
-    terminalSubmit.addEventListener('click', executeCommand);
-    terminalInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        executeCommand();
-      }
-    });
+    default:
+      pRes.innerHTML = `command not found: ${escapeHtml(base)}. Type <span class="text-neonPink">help</span> for a full list.`;
+      terminalBody.appendChild(pRes);
+  }
 
-    function escapeHtml(text) {
-      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
-      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
-  </script>
+  cmdHistory.push(raw);
+  terminalInput.value = '';
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
+const cmdHistory = [];
+let histIndex = -1;
+terminalSubmit.addEventListener('click', executeCommand);
+terminalInput.addEventListener('keypress', e => { if(e.key==='Enter') executeCommand(); });
+terminalInput.addEventListener('keydown', e => {
+  if(e.key==='ArrowUp'){ if(cmdHistory.length){ histIndex = Math.max(0, (histIndex<0?cmdHistory.length:histIndex)-1); terminalInput.value = cmdHistory[histIndex]||''; } e.preventDefault(); }
+  if(e.key==='ArrowDown'){ if(cmdHistory.length){ histIndex = Math.min(cmdHistory.length, histIndex+1); terminalInput.value = cmdHistory[histIndex]||''; } e.preventDefault(); }
+});
+
+
+
+// ===== Custom cursor + particle trail + ping click =====
+(function(){
+  if(window.matchMedia('(hover:none) and (pointer:coarse)').matches) return;
+  const dot = document.getElementById('cursor-dot'), ring = document.getElementById('cursor-ring');
+  let mx=innerWidth/2, my=innerHeight/2, rx=mx, ry=my, lastP=0;
+  addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; spawnParticle(mx,my);
+  });
+  (function loop(){ rx += (mx-rx)*.15; ry += (my-ry)*.15; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+  document.querySelectorAll('a,button,input,.glitch-hover').forEach(el => {
+    el.addEventListener('mouseenter', () => { dot.classList.add('hovering'); ring.classList.add('hovering'); });
+    el.addEventListener('mouseleave', () => { dot.classList.remove('hovering'); ring.classList.remove('hovering'); });
+  });
+  const colors = ['#00ffcc','#ff00ff','#00ff66'];
+  function spawnParticle(x,y){
+    const now = performance.now(); if(now-lastP<35) return; lastP=now;
+    const p = document.createElement('div'); p.className='cursor-particle';
+    const c = colors[Math.floor(Math.random()*colors.length)];
+    p.style.left=x+'px'; p.style.top=y+'px'; p.style.background=c; p.style.boxShadow=`0 0 8px 2px ${c}`;
+    document.body.appendChild(p); p.addEventListener('animationend', () => p.remove());
+  }
+  addEventListener('mousedown', e => {
+    const ring2 = document.createElement('div'); ring2.className='ping-ring';
+    ring2.style.left=e.clientX+'px'; ring2.style.top=e.clientY+'px';
+    document.body.appendChild(ring2); ring2.addEventListener('animationend', () => ring2.remove());
+  });
+})();
+
+// ===== Fake live HUD =====
+const startTime = Date.now();
+const fakeIP = `10.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}.${Math.floor(Math.random()*255)}`;
+document.getElementById('hud-ip').textContent = fakeIP;
+setInterval(() => {
+  const el = Date.now()-startTime; const s=Math.floor(el/1000)%60, m=Math.floor(el/60000)%60, h=Math.floor(el/3600000);
+  document.getElementById('hud-time').textContent = [h,m,s].map(n=>String(n).padStart(2,'0')).join(':');
+  document.getElementById('hud-ping').textContent = (Math.random()*15+8).toFixed(1)+' ms';
+  document.getElementById('hud-cpu').style.width = (20+Math.random()*60).toFixed(0)+'%';
+  document.getElementById('hud-mem').style.width = (35+Math.random()*40).toFixed(0)+'%';
+}, 1200);
+
+// ===== Manual screen glitch (sudo / right-click / root access) =====
+function triggerGlitch(){
+  document.body.classList.add('glitching');
+  setTimeout(() => document.body.classList.remove('glitching'), 350);
+}
+
+// ===== Custom right-click context menu =====
+const ctxmenu = document.getElementById('ctxmenu');
+document.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  ctxmenu.style.display = 'block';
+  ctxmenu.style.left = Math.min(e.clientX, innerWidth-230)+'px';
+  ctxmenu.style.top = Math.min(e.clientY, innerHeight-160)+'px';
+});
+document.addEventListener('click', () => ctxmenu.style.display='none');
+ctxmenu.querySelectorAll('.item').forEach(item => {
+  item.addEventListener('click', e => {
+    e.stopPropagation();
+    const act = item.dataset.act;
+    if(act==='scan') triggerGlitch();
+    if(act==='glitch') triggerGlitch();
+    if(act==='ip') navigator.clipboard?.writeText(fakeIP);
+    if(act==='root') grantRoot();
+    ctxmenu.style.display='none';
+  });
+});
+
+// ===== Konami code easter egg =====
+const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let kIndex = 0;
+addEventListener('keydown', e => {
+  const key = e.key.length===1 ? e.key.toLowerCase() : e.key;
+  if(key === konami[kIndex]){ kIndex++; if(kIndex===konami.length){ grantRoot(); kIndex=0; } }
+  else kIndex = (key===konami[0]) ? 1 : 0;
+});
+function grantRoot(){
+  triggerGlitch();
+  const banner = document.getElementById('rootbanner');
+  banner.style.display = 'flex';
+  setTimeout(() => { triggerGlitch(); banner.style.display='none'; }, 2400);
+}
+</script>
 </body>
 </html>
-
-
