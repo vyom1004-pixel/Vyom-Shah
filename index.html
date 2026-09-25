@@ -1,226 +1,628 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <title>Vyom Rupeshkumar Shah</title>
-  <!-- Import a stylish Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vyom Rupeshkumar Shah | Cyberpunk Portfolio</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyberDark: '#07090f',
+            cyberCard: '#0d111a',
+            neonCyan: '#00ffcc',
+            neonPink: '#ff00ff',
+            neonGreen: '#00ff66',
+            matrixDim: '#003311'
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            mono: ['Courier New', 'Courier', 'monospace']
+          },
+          boxShadow: {
+            'neon-cyan': '0 0 20px rgba(0, 255, 204, 0.4)',
+            'neon-pink': '0 0 20px rgba(255, 0, 255, 0.4)',
+            'neon-green': '0 0 20px rgba(0, 255, 102, 0.4)',
+            'inner-glow': 'inset 0 0 15px rgba(0, 255, 204, 0.2)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     body {
-      font-family: 'Courier New', monospace;
-      background: #0a0a0a;
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #07090f;
       color: #00ffcc;
-      margin: 0;
+      overflow-x: hidden;
     }
 
-    /* Splash screen styles */
-    #splash {
+    h1, h2, h3, h4, .font-orbitron {
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07090f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00ffcc;
+      border-radius: 4px;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #ff00ff;
+    }
+
+    /* Matrix Canvas Background */
+    #matrix-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
       height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      background: #000;
-      color: #0ff;
-      cursor: pointer;
-      animation: fadeIn 2s ease-in;
-    }
-    .glow {
-      font-size: 3em;
-      font-family: 'Orbitron', sans-serif; /* Futuristic font */
-      text-shadow: 0 0 15px #0ff, 0 0 30px #0ff, 0 0 60px #0ff;
-      animation: pulse 2s infinite;
-    }
-    .tap-text {
-      margin-top: 20px;
-      font-size: 1.2em;
-      color: #888;
-      animation: flicker 2s infinite alternate;
-    }
-    @keyframes pulse {
-      0% { text-shadow: 0 0 15px #0ff; }
-      50% { text-shadow: 0 0 30px #0ff, 0 0 60px #0ff; }
-      100% { text-shadow: 0 0 15px #0ff; }
+      z-index: -1;
+      opacity: 0.18;
+      pointer-events: none;
     }
 
-    /* Fade-out effect for splash */
-    .fade-out {
-      animation: fadeOut 1s forwards;
+    /* Glitch Animation */
+    @keyframes glitch {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
     }
-    @keyframes fadeOut {
-      from { opacity: 1; }
-      to { opacity: 0; visibility: hidden; }
-    }
-
-    header {
-      background: linear-gradient(90deg, #111, #222);
-      text-align: center;
-      padding: 40px;
-      border-bottom: 2px solid #00ffcc;
-      animation: flicker 2s infinite alternate;
-    }
-    header h1 {
-      color: #00ffcc;
-      text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc;
-      animation: glow 1.5s ease-in-out infinite alternate;
-    }
-    header p {
-      color: #ff00ff;
-      text-shadow: 0 0 8px #ff00ff;
-    }
-    section {
-      padding: 30px;
-      max-width: 900px;
-      margin: auto;
-      animation: fadeIn 2s ease-in;
-    }
-    h2 {
-      color: #ff00ff;
-      border-bottom: 1px solid #444;
-      padding-bottom: 5px;
-      text-shadow: 0 0 8px #ff00ff;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      margin: 10px 0;
-      padding: 8px;
-      background: #111;
-      border-left: 3px solid #ff00ff;
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    li:hover {
-      transform: scale(1.05);
-      background: #222;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      color: #888;
-      font-size: 14px;
+    .glitch-hover:hover {
+      animation: glitch 0.3s infinite;
     }
 
-    /* Animations */
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc; }
-      to { text-shadow: 0 0 20px #00ffcc, 0 0 40px #00ffcc; }
+    /* Neon Border Pulse */
+    @keyframes borderPulse {
+      0%, 100% { border-color: rgba(0, 255, 204, 0.4); box-shadow: 0 0 10px rgba(0, 255, 204, 0.2); }
+      50% { border-color: rgba(255, 0, 255, 0.8); box-shadow: 0 0 25px rgba(255, 0, 255, 0.5); }
     }
-    @keyframes flicker {
-      0% { opacity: 1; }
-      45% { opacity: 0.8; }
-      55% { opacity: 0.6; }
-      100% { opacity: 1; }
+    .cyber-border {
+      border: 1px solid rgba(0, 255, 204, 0.4);
+      animation: borderPulse 4s infinite;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    /* Scanlines effect */
+    .scanlines {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.3)
+      );
+      background-size: 100% 4px;
+    }
+
+    /* Terminal blinking cursor */
+    .cursor-blink::after {
+      content: '_';
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
     }
   </style>
 </head>
-<body>
-  <!-- Splash Screen -->
-  <div id="splash">
-    <h1 class="glow">Vyom Rupeshkumar Shah</h1>
-    <p class="tap-text">(Tap anywhere to enter)</p>
+<body class="scanlines relative min-h-screen">
+
+  <canvas id="matrix-canvas"></canvas>
+
+  <div id="splash" class="fixed inset-0 z-50 bg-[#05070a] flex flex-col justify-center items-center cursor-pointer transition-opacity duration-1000">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,255,204,0.1)_0%,transparent_70%)]"></div>
+    <div class="text-center px-4 relative z-10">
+      <div class="inline-block mb-4 px-4 py-1 rounded border border-neonCyan/40 bg-neonCyan/10 text-neonCyan text-xs tracking-widest uppercase animate-pulse">
+        [ SECURE CONNECTION ESTABLISHED ]
+      </div>
+      <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink tracking-wider mb-4 drop-shadow-[0_0_20px_rgba(0,255,204,0.6)]">
+        VYOM RUPESHKUMAR SHAH
+      </h1>
+      <p class="text-neonPink font-mono text-lg md:text-xl tracking-widest mb-8 text-shadow-pink">
+        &gt; B.Tech ECE | Aspiring Ethical Hacker
+      </p>
+      <div class="inline-flex items-center gap-3 px-8 py-3 rounded-lg bg-cyberCard border border-neonCyan text-neonCyan font-orbitron tracking-widest text-sm shadow-neon-cyan hover:bg-neonCyan hover:text-cyberDark transition-all duration-300">
+        <i class="fa-solid fa-terminal"></i>
+        <span>INITIALIZE SYSTEM [ TAP TO ENTER ]</span>
+      </div>
+    </div>
   </div>
 
-  <!-- Main Content (hidden initially) -->
-  <div id="main" style="display:none;">
-    <header>
-      <h1>Vyom Rupeshkumar Shah — Qualifications</h1>
-      <p>B.Tech ECE Student | Aspiring Ethical Hacker</p>
+  <div id="main" class="hidden opacity-0 transition-opacity duration-1000">
+    
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-40 backdrop-blur-md bg-cyberDark/80 border-b border-neonCyan/30 px-6 py-4">
+      <div class="max-w-6xl mx-auto flex justify-between items-center">
+        <a href="#hero" class="flex items-center gap-2 text-neonCyan font-orbitron font-bold text-lg tracking-wider">
+          <i class="fa-solid fa-shield-halved text-neonPink animate-pulse"></i>
+          <span>VRS_SEC</span>
+        </a>
+        
+        <div class="hidden md:flex items-center gap-8 text-sm font-orbitron">
+          <a href="#about" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> ABOUT</a>
+          <a href="#skills" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> SKILLS & CERTS</a>
+          <a href="#goals" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> GOALS</a>
+          <a href="#terminal" class="text-gray-300 hover:text-neonCyan transition-colors"><span>//</span> TERMINAL</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="px-4 py-2 rounded bg-neonCyan/10 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-cyberDark transition-all text-xs font-orbitron flex items-center gap-2 shadow-neon-cyan">
+            <i class="fa-brands fa-linkedin-in"></i>
+            <span class="hidden sm:inline">LINKEDIN</span>
+          </a>
+          <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-xl p-2 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-800 flex flex-col gap-3 font-orbitron text-sm">
+        <a href="#about" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> ABOUT</a>
+        <a href="#skills" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> SKILLS & CERTS</a>
+        <a href="#goals" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> GOALS</a>
+        <a href="#terminal" class="mobile-link text-gray-300 hover:text-neonCyan py-1"><span>//</span> TERMINAL</a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero" class="relative py-24 px-6 text-center max-w-5xl mx-auto">
+      <div class="absolute inset-0 -z-10 bg-radial from-neonCyan/10 via-transparent to-transparent blur-3xl"></div>
+      
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyberCard border border-neonPink/50 text-neonPink text-xs mb-6 shadow-neon-pink">
+        <span class="w-2 h-2 rounded-full bg-neonPink animate-ping"></span>
+        STATUS: READY FOR CYBERSECURITY OPERATIONS
+      </div>
+
+      <h1 class="text-5xl md:text-7xl font-black text-white mb-6 font-orbitron tracking-tight">
+        VYOM RUPESHKUMAR <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan to-neonPink">SHAH</span>
+      </h1>
+      
+      <p class="text-xl md:text-2xl text-neonCyan font-mono mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,255,204,0.4)]">
+        B.Tech ECE Student | Aspiring Ethical Hacker
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#skills" class="px-8 py-3 rounded-lg bg-neonCyan text-cyberDark font-orbitron font-bold tracking-wider hover:bg-white hover:shadow-neon-cyan transition-all duration-300">
+          EXPLORE CREDENTIALS
+        </a>
+        <a href="#terminal" class="px-8 py-3 rounded-lg bg-cyberCard border border-neonPink text-neonPink font-orbitron font-bold tracking-wider hover:bg-neonPink hover:text-cyberDark hover:shadow-neon-pink transition-all duration-300">
+          LAUNCH CLI INTERFACE
+        </a>
+      </div>
     </header>
 
-    <section>
-      <h2>Education</h2>
-      <ul>
-        <li>B.Tech in Electronics & Communication Engineering, SCET Surat</li>
-        <li>Minor in VLSI (planned)</li>
-        <li>Interested in IIT Madras BSc in Data Science</li>
-      </ul>
+    <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
+          <i class="fa-solid fa-graduation-cap text-neonCyan"></i> ACADEMIC_MATRIX
+        </h2>
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Education Card 1 -->
+        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+          <div class="absolute top-0 right-0 px-3 py-1 bg-neonCyan/10 text-neonCyan text-xs rounded-bl font-orbitron border-l border-b border-neonCyan/30">PRIMARY</div>
+          <div class="text-neonCyan text-3xl mb-4"><i class="fa-solid fa-microchip"></i></div>
+          <h3 class="text-xl font-bold font-orbitron text-white mb-2">SCET Surat</h3>
+          <p class="text-gray-300 text-sm mb-4">B.Tech in Electronics & Communication Engineering (ECE)</p>
+          <div class="text-xs text-neonPink font-mono">[ HARDWARE & SYSTEMS ]</div>
+        </div>
+
+        <!-- Education Card 2 -->
+        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+          <div class="absolute top-0 right-0 px-3 py-1 bg-neonPink/10 text-neonPink text-xs rounded-bl font-orbitron border-l border-b border-neonPink/30">SPECIALIZATION</div>
+          <div class="text-neonPink text-3xl mb-4"><i class="fa-solid fa-bolt"></i></div>
+          <h3 class="text-xl font-bold font-orbitron text-white mb-2">VLSI Specialization</h3>
+          <p class="text-gray-300 text-sm mb-4">Minor in VLSI Design & Semiconductor engineering (planned)</p>
+          <div class="text-xs text-neonCyan font-mono">[ SILICON ARCHITECTURE ]</div>
+        </div>
+
+        <!-- Education Card 3 -->
+        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6 relative group hover:-translate-y-2 transition-all duration-300 shadow-xl">
+          <div class="absolute top-0 right-0 px-3 py-1 bg-neonGreen/10 text-neonGreen text-xs rounded-bl font-orbitron border-l border-b border-neonGreen/30">FUTURE_EXPANSION</div>
+          <div class="text-neonGreen text-3xl mb-4"><i class="fa-solid fa-database"></i></div>
+          <h3 class="text-xl font-bold font-orbitron text-white mb-2">IIT Madras</h3>
+          <p class="text-gray-300 text-sm mb-4">Interested in pursuing BSc in Data Science & Programming</p>
+          <div class="text-xs text-neonGreen font-mono">[ ANALYTICS & AI ]</div>
+        </div>
+      </div>
     </section>
 
-      <section id="skills">
-        <h2>Skills</h2>
-        <ul>
-          <li>Programming: Python, Java, C++</li>
-          <li>Cybersecurity: Basic Kali Linux usage</li>
-          <li>Web Development basics</li>
-        </ul>
-      
-        <!-- Certificates inside Skills -->
-        <div class="certificates-block">
-          <h3>TryHackMe Module Completion Certificates</h3>
-          <ul>
+    <section id="skills" class="py-16 px-6 max-w-5xl mx-auto">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
+          <i class="fa-solid fa-shield-dog text-neonCyan"></i> SKILLS & CREDENTIALS
+        </h2>
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      </div>
+
+      <!-- Technical Skills Grid -->
+      <div class="mb-12">
+        <h3 class="text-xl font-orbitron font-semibold text-neonCyan mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-code text-neonPink"></i> TECHNICAL ARSENAL
+        </h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-brands fa-python text-2xl text-neonCyan"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">Python</div>
+              <div class="text-xs text-gray-400">Scripting & Automation</div>
+            </div>
+          </div>
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-brands fa-java text-2xl text-neonPink"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">Java</div>
+              <div class="text-xs text-gray-400">Object-Oriented Logic</div>
+            </div>
+          </div>
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-solid fa-c text-2xl text-neonGreen"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">C / C++</div>
+              <div class="text-xs text-gray-400">Low-level Systems</div>
+            </div>
+          </div>
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-solid fa-terminal text-2xl text-neonCyan"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">Kali Linux</div>
+              <div class="text-xs text-gray-400">Pentesting OS & Tools</div>
+            </div>
+          </div>
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-solid fa-globe text-2xl text-neonPink"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">Web Development</div>
+              <div class="text-xs text-gray-400">Frontend & Security</div>
+            </div>
+          </div>
+          <div class="bg-cyberCard border border-neonCyan/30 rounded-lg p-4 flex items-center gap-3 hover:border-neonCyan transition-all shadow-inner-glow">
+            <i class="fa-solid fa-network-wired text-2xl text-neonGreen"></i>
+            <div>
+              <div class="font-bold text-white font-orbitron text-sm">Nmap / Recon</div>
+              <div class="text-xs text-gray-400">Network Discovery</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certificates Blocks -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- TryHackMe Module Completion Certificates -->
+        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+            <h3 class="text-lg font-orbitron font-bold text-neonCyan flex items-center gap-2">
+              <i class="fa-solid fa-certificate"></i> TryHackMe Modules
+            </h3>
+            <span class="px-2 py-0.5 rounded bg-neonCyan/10 text-neonCyan text-xs">VERIFIED</span>
+          </div>
+          <ul class="space-y-4">
             <li>
-              <a href="certificates/linux_basics.pdf" target="_blank" style="color:#00ffcc; text-decoration:none;">
-                Linux Basics Certificate (PDF)
-              </a>
+              <button onclick="openCertModal('Linux Basics Certificate', 'TryHackMe Module Completion - Linux Fundamentals & Command Line Operations')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group">
+                <span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm">
+                  <i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Linux Basics Certificate
+                </span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
+              </button>
             </li>
             <li>
-              <a href=".pdf" target="_blank" style="color:#00ffcc; text-decoration:none;">
-                Nmap Basics Certificate (PDF)
-              </a>
+              <button onclick="openCertModal('Nmap Basics Certificate', 'TryHackMe Module Completion - Network Scanning & Enumeration via Nmap')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonCyan/30 hover:border-neonCyan hover:bg-neonCyan/10 transition-all flex items-center justify-between group">
+                <span class="text-white group-hover:text-neonCyan transition-colors font-orbitron text-sm">
+                  <i class="fa-solid fa-file-pdf text-neonPink mr-2"></i> Nmap Basics Certificate
+                </span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
+              </button>
             </li>
-            <!-- Add more module certificates here -->
           </ul>
         </div>
-      
-        <div class="certificates-block">
-          <h3>Official TryHackMe Certificates</h3>
-          <ul>
+
+        <!-- Official TryHackMe Certificates -->
+        <div class="cyber-border bg-cyberCard/90 backdrop-blur rounded-xl p-6">
+          <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-800">
+            <h3 class="text-lg font-orbitron font-bold text-neonPink flex items-center gap-2">
+              <i class="fa-solid fa-award"></i> Official Certifications
+            </h3>
+            <span class="px-2 py-0.5 rounded bg-neonPink/10 text-neonPink text-xs">OFFICIAL</span>
+          </div>
+          <ul class="space-y-4">
             <li>
-              <a href="certificates/Pre Security.pdf" target="_blank" style="color:#00ffcc; text-decoration:none;">
-                Pre Security(PDF)
-              </a>
+              <button onclick="openCertModal('Pre Security Pathway', 'TryHackMe Official Career Pathway - Pre Security (Networking, Web, & OS fundamentals)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group">
+                <span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm">
+                  <i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> Pre Security Pathway
+                </span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonPink"></i>
+              </button>
             </li>
             <li>
-              <a href="certificates/soc_analyst.pdf" target="_blank" style="color:#00ffcc; text-decoration:none;">
-                SOC Analyst Certificate (PDF)
-              </a>
+              <button onclick="openCertModal('SOC Analyst Level 1 Certificate', 'TryHackMe Official Career Pathway - Security Operations Center (SIEM, Threat Intelligence, Incident Response)')" class="w-full text-left px-4 py-3 rounded bg-cyberDark border border-neonPink/30 hover:border-neonPink hover:bg-neonPink/10 transition-all flex items-center justify-between group">
+                <span class="text-white group-hover:text-neonPink transition-colors font-orbitron text-sm">
+                  <i class="fa-solid fa-file-pdf text-neonCyan mr-2"></i> SOC Analyst Certificate
+                </span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-gray-400 group-hover:text-neonCyan"></i>
+              </button>
             </li>
-            <!-- Add more official certificates here -->
           </ul>
         </div>
-      </section>
 
-
-    <section>
-      <h2>Goals</h2>
-      <ul>
-        <li>Learn ethical hacking (OSCP-level)</li>
-        <li>Complete certifications: Security+, CEH, OSCP, CHFI</li>
-        <li>Build career combining ECE, VLSI, and cybersecurity</li>
-      </ul>
+      </div>
     </section>
 
-    <footer>
-      <p>© 2026 Vyom Rupeshkumar Shah | Cyberpunk Resume</p>
-      <p>
-        <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" style="color:#00ffcc; text-decoration:none;">
-          Connect with me on LinkedIn
-        </a>
-      </p>
+    <section id="goals" class="py-16 px-6 max-w-5xl mx-auto">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
+          <i class="fa-solid fa-bullseye text-neonCyan"></i> MISSION_OBJECTIVES
+        </h2>
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-6xl text-neonCyan/10 font-bold font-orbitron">01</div>
+          <div class="text-neonCyan font-orbitron font-bold text-lg mb-3">OSCP Mastery</div>
+          <p class="text-gray-300 text-sm">Master advanced penetration testing and ethical hacking up to OSCP-level proficiency through rigorous lab simulations.</p>
+        </div>
+
+        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-6xl text-neonPink/10 font-bold font-orbitron">02</div>
+          <div class="text-neonPink font-orbitron font-bold text-lg mb-3">Industry Certs</div>
+          <p class="text-gray-300 text-sm">Acquire premier global security certifications: CompTIA Security+, CEH, OSCP, and CHFI for digital forensics.</p>
+        </div>
+
+        <div class="cyber-border bg-cyberCard/90 rounded-xl p-6 relative overflow-hidden">
+          <div class="absolute -right-4 -bottom-4 text-6xl text-neonGreen/10 font-bold font-orbitron">03</div>
+          <div class="text-neonGreen font-orbitron font-bold text-lg mb-3">Cross-Domain Synergy</div>
+          <p class="text-gray-300 text-sm">Build a unique professional career combining ECE hardware engineering, VLSI semiconductor design, and cybersecurity.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="terminal" class="py-16 px-6 max-w-5xl mx-auto">
+      <div class="flex items-center gap-4 mb-10">
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+        <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3">
+          <i class="fa-solid fa-terminal text-neonCyan"></i> SECURE_CLI
+        </h2>
+        <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
+      </div>
+
+      <div class="bg-black border border-neonCyan/60 rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.2)] overflow-hidden">
+        <!-- Terminal Header -->
+        <div class="bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+            <span class="ml-4 text-xs text-gray-400 font-mono">vyom@vrs-cyber-terminal:~</span>
+          </div>
+          <div class="text-xs text-neonCyan font-orbitron">BASH v5.2</div>
+        </div>
+
+        <!-- Terminal Body -->
+        <div id="terminal-body" class="p-6 font-mono text-sm h-72 overflow-y-auto space-y-2 text-neonCyan">
+          <p class="text-gray-400">System initialization complete. Type <span class="text-neonPink font-bold">help</span> to view available commands.</p>
+          <div class="command-output"></div>
+        </div>
+
+        <!-- Terminal Input Prompt -->
+        <div class="bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
+          <span class="text-neonPink font-bold">&gt;</span>
+          <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type command here..." autofocus>
+          <button id="terminal-submit" class="px-4 py-1 rounded bg-neonCyan/20 text-neonCyan border border-neonCyan text-xs font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all">EXEC</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Certificate Preview Modal -->
+    <div id="cert-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex justify-center items-center p-4">
+      <div class="bg-cyberCard border border-neonCyan rounded-xl max-w-lg w-full p-6 shadow-neon-cyan relative animate-[fadeIn_0.3s_ease-out]">
+        <button onclick="closeCertModal()" class="absolute top-4 right-4 text-gray-400 hover:text-neonPink text-xl">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="flex items-center gap-3 mb-4 text-neonCyan text-2xl">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h3 id="modal-title" class="font-orbitron font-bold text-white text-lg">Certificate Title</h3>
+        </div>
+        <p id="modal-desc" class="text-gray-300 text-sm mb-6 bg-black/40 p-4 rounded border border-gray-800 font-mono"></p>
+        <div class="flex justify-end gap-3">
+          <button onclick="closeCertModal()" class="px-4 py-2 rounded bg-gray-800 text-gray-300 hover:bg-gray-700 font-orbitron text-xs">CLOSE</button>
+          <button onclick="simulateDownload()" class="px-6 py-2 rounded bg-neonCyan text-cyberDark font-orbitron font-bold text-xs hover:bg-white transition-all shadow-neon-cyan">DOWNLOAD VERIFIED PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-cyberCard border-t border-neonCyan/30 py-8 px-6 text-center">
+      <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="text-gray-400 text-sm font-mono">
+          &copy; 2026 Vyom Rupeshkumar Shah | Cyberpunk Portfolio
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan hover:text-neonPink transition-colors flex items-center gap-2 text-sm font-orbitron">
+            <i class="fa-brands fa-linkedin-in"></i> LinkedIn Profile
+          </a>
+        </div>
+      </div>
     </footer>
+
   </div>
 
-  <!-- Script to toggle splash -->
   <script>
-    document.getElementById("splash").addEventListener("click", function() {
-      document.getElementById("splash").classList.add("fade-out");
-      setTimeout(function() {
-        document.getElementById("splash").style.display = "none";
-        document.getElementById("main").style.display = "block";
-      }, 1000); // wait for fade-out animation
+    // Matrix Rain Effect
+    const canvas = document.getElementById('matrix-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*+-/<>[]{}';
+    const alphabet = katakana + latin;
+
+    const fontSize = 16;
+    let columns = canvas.width / fontSize;
+    const rainDrops = [];
+
+    for (let x = 0; x < columns; x++) {
+      rainDrops[x] = 1;
+    }
+
+    function drawMatrix() {
+      ctx.fillStyle = 'rgba(7, 9, 15, 0.08)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#00ffcc';
+      ctx.font = fontSize + 'px monospace';
+
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
+    }
+    setInterval(drawMatrix, 30);
+
+    // Splash Screen Interaction
+    const splash = document.getElementById('splash');
+    const main = document.getElementById('main');
+
+    splash.addEventListener('click', () => {
+      splash.classList.add('opacity-0');
+      setTimeout(() => {
+        splash.style.display = 'none';
+        main.classList.remove('hidden');
+        setTimeout(() => main.classList.remove('opacity-0'), 50);
+      }, 1000);
     });
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Certificate Modal Functions
+    function openCertModal(title, desc) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-desc').innerText = desc;
+      document.getElementById('cert-modal').classList.remove('hidden');
+    }
+
+    function closeCertModal() {
+      document.getElementById('cert-modal').classList.add('hidden');
+    }
+
+    function simulateDownload() {
+      alert('Secure Certificate Download Initiated. Verified Digital Signature Validated.');
+      closeCertModal();
+    }
+
+    // Interactive Terminal CLI Logic
+    const terminalInput = document.getElementById('terminal-input');
+    const terminalBody = document.getElementById('terminal-body');
+    const terminalSubmit = document.getElementById('terminal-submit');
+
+    function executeCommand() {
+      const cmd = terminalInput.value.trim().toLowerCase();
+      if (!cmd) return;
+
+      const pUser = document.createElement('p');
+      pUser.innerHTML = `<span class="text-neonPink">vyom@vrs-cyber-terminal:~$</span> ${escapeHtml(cmd)}`;
+      terminalBody.appendChild(pUser);
+
+      const pRes = document.createElement('p');
+      pRes.className = "text-gray-300";
+
+      switch (cmd) {
+        case 'help':
+          pRes.innerHTML = 'Available commands: <span class="text-neonCyan">about</span>, <span class="text-neonCyan">skills</span>, <span class="text-neonCyan">certs</span>, <span class="text-neonCyan">goals</span>, <span class="text-neonCyan">contact</span>, <span class="text-neonCyan">clear</span>';
+          break;
+        case 'about':
+          pRes.innerHTML = 'Vyom Rupeshkumar Shah - B.Tech ECE Student at SCET Surat. Aspiring Ethical Hacker and VLSI enthusiast.';
+          break;
+        case 'skills':
+          pRes.innerHTML = 'Programming: Python, Java, C++ | Security: Kali Linux, Nmap, Web Security, SOC Analyst.';
+          break;
+        case 'certs':
+          pRes.innerHTML = 'TryHackMe: Linux Basics, Nmap Basics, Pre Security Pathway, SOC Analyst Level 1.';
+          break;
+        case 'goals':
+          pRes.innerHTML = 'Objectives: OSCP-level hacking proficiency, Security+, CEH, CHFI certifications, and cross-domain ECE/Cybersecurity career.';
+          break;
+        case 'contact':
+          pRes.innerHTML = 'LinkedIn: <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan underline">linkedin.com/in/vyom-shah-a7093a37b/</a>';
+          break;
+        case 'clear':
+          terminalBody.innerHTML = '<p class="text-gray-400">Terminal reset. Type <span class="text-neonPink font-bold">help</span> for commands.</p>';
+          terminalInput.value = '';
+          return;
+        default:
+          pRes.innerHTML = `Command not recognized: "${escapeHtml(cmd)}". Type <span class="text-neonPink">help</span> for assistance.`;
+      }
+
+      terminalBody.appendChild(pRes);
+      terminalInput.value = '';
+      terminalBody.scrollTop = terminalBody.scrollHeight;
+    }
+
+    terminalSubmit.addEventListener('click', executeCommand);
+    terminalInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        executeCommand();
+      }
+    });
+
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
   </script>
 </body>
 </html>
-
-</html>
-
 
 
