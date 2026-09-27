@@ -73,7 +73,10 @@
   .splash-kicker{display:inline-flex;align-items:center;gap:.65rem;margin-bottom:clamp(1.5rem,4vh,2.5rem);padding:.65rem 1rem;border:1px solid rgba(0,255,204,.28);border-radius:999px;background:rgba(0,255,204,.06);color:#a7fff0;font-size:.68rem;letter-spacing:.18em;box-shadow:0 0 24px rgba(0,255,204,.08);}
   .splash-kicker::before{content:"";width:7px;height:7px;flex:none;border-radius:50%;background:#00ffcc;box-shadow:0 0 12px #00ffcc;}
   .splash-name{display:block;width:100%;max-width:100%;margin:0 auto clamp(.8rem,2.5vh,1.25rem);font-size:clamp(.6rem,4vw,3.75rem);line-height:1.2;letter-spacing:-.055em;white-space:nowrap;text-align:center;text-shadow:0 0 26px rgba(0,255,204,.22);}
-  .splash-tagline{margin:0 auto clamp(1.8rem,5vh,3rem);color:#c2b4ff;font-size:clamp(.74rem,2.4vw,1.15rem);letter-spacing:.11em;}
+  .splash-tagline{margin:0 auto .9rem;color:#c2b4ff;font-size:clamp(.74rem,2.4vw,1.15rem);letter-spacing:.11em;}
+  .splash-terminal-hint,.terminal-instruction{width:fit-content;max-width:100%;margin-inline:auto;padding:.8rem 1.2rem;border:1px solid rgba(0,255,204,.42);border-radius:12px;background:rgba(0,255,204,.07);color:#83ffea;font-weight:800;letter-spacing:.12em;text-align:center;text-shadow:0 0 12px rgba(0,255,204,.35);box-shadow:0 0 24px rgba(0,255,204,.12);}
+  .splash-terminal-hint{margin-bottom:clamp(1.3rem,4vh,2.2rem);font-size:clamp(.68rem,1.7vw,1rem);}
+  .terminal-instruction{margin-bottom:1.25rem;font-size:clamp(.8rem,1.3vw,1.15rem);}
   .splash-cta{max-width:100%;padding:.9rem clamp(1rem,5vw,2rem);border-radius:12px;font-size:clamp(.62rem,2vw,.82rem);letter-spacing:.12em;box-shadow:0 0 26px rgba(0,255,204,.18);}
   @media(max-width:420px){.splash-kicker{font-size:.56rem;letter-spacing:.12em;padding:.55rem .75rem}.splash-name{letter-spacing:-.055em}}
   .signal-reveal{position:relative;opacity:0;transform:translateY(28px) scale(.99);filter:blur(5px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.75,.25,1),filter .75s ease;}
@@ -83,10 +86,7 @@
   @keyframes signalSweep{0%{opacity:0;transform:translateY(-100%)}20%{opacity:1}100%{opacity:0;transform:translateY(100%)}}
   @media(prefers-reduced-motion:reduce){.signal-reveal,.signal-reveal.signal-visible{opacity:1;transform:none;filter:none;transition:none}.signal-reveal::after{display:none}}
   #main:not(.hidden){display:flex;flex-direction:column;min-height:100vh;}
-  #main{margin-bottom:0!important;padding-bottom:0!important;}
-  .site-footer{min-height:0;display:block;background:#05070a;padding-bottom:0!important;margin: auto 0 0!important;}
-  html{height:100%;overflow:hidden;}
-  body{height:100vh;overflow-x:hidden;overflow-y:auto;overscroll-behavior-y:contain;}
+  .site-footer{min-height:0;display:block;background:#05070a;padding-bottom:0!important;margin:auto 0 0!important;}
   /* ---- decrypt text ---- */
   .decrypt{display:inline-block;}
 
@@ -138,6 +138,7 @@
     <div class="splash-kicker uppercase animate-pulse">[ SECURE CONNECTION ESTABLISHED ]</div>
     <h1 class="splash-name font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink drop-shadow-[0_0_20px_rgba(0,255,204,0.6)]" id="splash-decrypt">VYOM RUPESHKUMAR SHAH</h1>
     <p class="splash-tagline font-mono">&gt; B.Tech ECE | Aspiring Ethical Hacker</p>
+    <p class="splash-terminal-hint font-orbitron">WHEN THE TERMINAL APPEARS, START TYPING — NO CLICK NEEDED</p>
     <div class="splash-cta inline-flex items-center gap-3 bg-cyberCard border border-neonCyan text-neonCyan font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all duration-300">
       <i class="fa-solid fa-terminal"></i><span>INITIALIZE SYSTEM [ TAP TO ENTER ]</span>
     </div>
@@ -279,6 +280,7 @@
       <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-terminal text-neonCyan"></i> SECURE_CLI</h2>
       <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
     </div>
+    <p class="terminal-instruction font-orbitron">WHEN THE COMMAND LINE IS VISIBLE, START TYPING — NO CLICK NEEDED</p>
     <div class="bg-black border border-neonCyan/60 rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.2)] overflow-hidden">
       <div class="bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
         <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="ml-4 text-xs text-gray-400 font-mono">vyom@vrs-cyber-terminal:<span id="term-path-head">~</span></span></div>
@@ -343,22 +345,24 @@ setInterval(drawMatrix, 30);
 // ===== Splash =====
 const splash = document.getElementById('splash');
 const main = document.getElementById('main');
-function stopScrollAfterFooter(){
+function stopDocumentAtFooter(){
   if(main.classList.contains('hidden')) return;
   const footer = main.querySelector(':scope > footer');
-  if(!footer) return;
-  const footerBottom = footer.getBoundingClientRect().bottom + document.body.scrollTop;
-  const lastAllowedScroll = Math.max(0, footerBottom - document.body.clientHeight);
-  if(document.body.scrollTop > lastAllowedScroll) document.body.scrollTop = lastAllowedScroll;
+  const scroller = document.scrollingElement;
+  if(!footer || !scroller) return;
+  const footerDocumentBottom = footer.getBoundingClientRect().bottom + window.scrollY;
+  const lastAllowedScroll = Math.max(0, Math.ceil(footerDocumentBottom - window.innerHeight));
+  if(scroller.scrollTop > lastAllowedScroll) scroller.scrollTop = lastAllowedScroll;
 }
-document.body.addEventListener('scroll', stopScrollAfterFooter, {passive:true});
-window.addEventListener('resize', stopScrollAfterFooter);
+window.addEventListener('scroll', stopDocumentAtFooter, {passive:true});
+window.addEventListener('resize', stopDocumentAtFooter);
 splash.addEventListener('click', () => {
   splash.classList.add('opacity-0');
   setTimeout(() => {
     splash.style.display='none';
     main.classList.remove('hidden');
     setTimeout(() => main.classList.remove('opacity-0'),50);
+    requestAnimationFrame(stopDocumentAtFooter);
   },1000);
 });
 
