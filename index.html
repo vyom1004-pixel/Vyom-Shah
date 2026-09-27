@@ -77,6 +77,8 @@
   .splash-terminal-hint,.terminal-instruction{width:fit-content;max-width:100%;margin-inline:auto;padding:.8rem 1.2rem;border:1px solid rgba(0,255,204,.42);border-radius:12px;background:rgba(0,255,204,.07);color:#83ffea;font-weight:800;letter-spacing:.12em;text-align:center;text-shadow:0 0 12px rgba(0,255,204,.35);box-shadow:0 0 24px rgba(0,255,204,.12);}
   .splash-terminal-hint{margin-bottom:clamp(1.3rem,4vh,2.2rem);font-size:clamp(.68rem,1.7vw,1rem);}
   .terminal-instruction{margin-bottom:1.25rem;font-size:clamp(.8rem,1.3vw,1.15rem);}
+  .desktop-only-hint{display:block;}
+  .mobile-only-hint{display:none;}
   .splash-cta{max-width:100%;padding:.9rem clamp(1rem,5vw,2rem);border-radius:12px;font-size:clamp(.62rem,2vw,.82rem);letter-spacing:.12em;box-shadow:0 0 26px rgba(0,255,204,.18);}
   @media(max-width:420px){.splash-kicker{font-size:.56rem;letter-spacing:.12em;padding:.55rem .75rem}.splash-name{letter-spacing:-.055em}}
   .signal-reveal{position:relative;opacity:0;transform:translateY(28px) scale(.99);filter:blur(5px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.75,.25,1),filter .75s ease;}
@@ -87,6 +89,26 @@
   @media(prefers-reduced-motion:reduce){.signal-reveal,.signal-reveal.signal-visible{opacity:1;transform:none;filter:none;transition:none}.signal-reveal::after{display:none}}
   #main:not(.hidden){display:flex;flex-direction:column;min-height:100vh;}
   .site-footer{min-height:0;display:block;background:#05070a;padding-bottom:0!important;margin:auto 0 0!important;}
+  @media(max-width:640px){
+    #main nav{padding-left:1rem!important;padding-right:1rem!important;}
+    #main>section{padding-left:1rem!important;padding-right:1rem!important;}
+    #hero{padding-top:3.5rem!important;padding-bottom:3.5rem!important;}
+    .hero-status{max-width:100%;white-space:normal;font-size:.62rem;line-height:1.5;letter-spacing:.04em;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions a{width:100%;padding:.8rem 1rem!important;text-align:center;font-size:.72rem;}
+    #main section>.flex>h2{font-size:clamp(1rem,4.6vw,1.35rem);gap:.45rem;line-height:1.35;}
+    .terminal-instruction{width:100%;padding:.75rem .8rem;font-size:clamp(.72rem,3vw,.95rem);letter-spacing:.06em;line-height:1.5;border-radius:12px;}
+    .mobile-only-hint{display:block;margin:.25rem auto 1rem;color:#ff8cff;font:600 .68rem/1.5 'Share Tech Mono',monospace;letter-spacing:.06em;text-align:center;}
+    .desktop-only-hint{display:none!important;}
+    .terminal-topbar{flex-wrap:wrap;gap:.5rem;}
+    .terminal-command-row{gap:.5rem!important;padding:.75rem!important;}
+    #term-prompt{font-size:.68rem;}
+    #terminal-input{min-width:0;font-size:.8rem;}
+    #terminal-submit{padding-left:.7rem!important;padding-right:.7rem!important;}
+    #terminal-body{padding:1rem!important;}
+    .site-footer{padding-left:1rem!important;padding-right:1rem!important;}
+    .site-footer>div>div:first-child{font-size:.7rem;line-height:1.7;}
+  }
   /* ---- decrypt text ---- */
   .decrypt{display:inline-block;}
 
@@ -138,7 +160,8 @@
     <div class="splash-kicker uppercase animate-pulse">[ SECURE CONNECTION ESTABLISHED ]</div>
     <h1 class="splash-name font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink drop-shadow-[0_0_20px_rgba(0,255,204,0.6)]" id="splash-decrypt">VYOM RUPESHKUMAR SHAH</h1>
     <p class="splash-tagline font-mono">&gt; B.Tech ECE | Aspiring Ethical Hacker</p>
-    <p class="splash-terminal-hint font-orbitron">WHEN THE TERMINAL APPEARS, START TYPING — NO CLICK NEEDED</p>
+    <p class="splash-terminal-hint desktop-only-hint font-orbitron">DESKTOP: WHEN THE TERMINAL APPEARS, START TYPING — NO CLICK NEEDED</p>
+    <p class="splash-terminal-hint mobile-only-hint font-orbitron">PHONE: TAP THE COMMAND LINE TO OPEN YOUR KEYBOARD</p>
     <div class="splash-cta inline-flex items-center gap-3 bg-cyberCard border border-neonCyan text-neonCyan font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all duration-300">
       <i class="fa-solid fa-terminal"></i><span>INITIALIZE SYSTEM [ TAP TO ENTER ]</span>
     </div>
@@ -162,7 +185,7 @@
         <a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="px-4 py-2 rounded bg-neonCyan/10 border border-neonCyan text-neonCyan hover:bg-neonCyan hover:text-cyberDark transition-all text-xs font-orbitron flex items-center gap-2 shadow-neon-cyan">
           <i class="fa-brands fa-linkedin-in"></i><span class="hidden sm:inline">LINKEDIN</span>
         </a>
-        <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-xl p-2"><i class="fa-solid fa-bars"></i></button>
+        <button id="mobile-menu-btn" class="md:hidden text-neonCyan text-xl p-2" type="button" aria-label="Open navigation menu" aria-controls="mobile-menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
       </div>
     </div>
     <div id="mobile-menu" class="hidden md:hidden mt-4 pt-4 border-t border-gray-800 flex flex-col gap-3 font-orbitron text-sm">
@@ -175,14 +198,14 @@
 
   <header id="hero" class="relative py-24 px-6 text-center max-w-5xl mx-auto">
     <div class="absolute inset-0 -z-10 bg-radial from-neonCyan/10 via-transparent to-transparent blur-3xl"></div>
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyberCard border border-neonPink/50 text-neonPink text-xs mb-6 shadow-neon-pink">
+    <div class="hero-status inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyberCard border border-neonPink/50 text-neonPink text-xs mb-6 shadow-neon-pink">
       <span class="w-2 h-2 rounded-full bg-neonPink animate-ping"></span>STATUS: READY FOR CYBERSECURITY OPERATIONS
     </div>
     <h1 class="name-one-line w-full text-center font-black text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-white to-neonPink mb-6 font-orbitron drop-shadow-[0_0_20px_rgba(0,255,204,0.5)]">
       <span id="hero-decrypt">VYOM RUPESHKUMAR SHAH</span>
     </h1>
     <p class="text-xl md:text-2xl text-neonCyan font-mono mb-8 tracking-wide drop-shadow-[0_0_10px_rgba(0,255,204,0.4)]">B.Tech ECE Student | Aspiring Ethical Hacker</p>
-    <div class="flex flex-wrap justify-center gap-4">
+    <div class="hero-actions flex flex-wrap justify-center gap-4">
       <a href="#skills" class="px-8 py-3 rounded-lg bg-neonCyan text-cyberDark font-orbitron font-bold tracking-wider hover:bg-white hover:shadow-neon-cyan transition-all duration-300">EXPLORE CREDENTIALS</a>
       <a href="#terminal" class="px-8 py-3 rounded-lg bg-cyberCard border border-neonPink text-neonPink font-orbitron font-bold tracking-wider hover:bg-neonPink hover:text-cyberDark hover:shadow-neon-pink transition-all duration-300">LAUNCH CLI INTERFACE</a>
     </div>
@@ -280,18 +303,19 @@
       <h2 class="text-2xl md:text-3xl font-orbitron font-bold text-neonPink tracking-wider flex items-center gap-3"><i class="fa-solid fa-terminal text-neonCyan"></i> SECURE_CLI</h2>
       <div class="h-px bg-neonCyan flex-grow opacity-50"></div>
     </div>
-    <p class="terminal-instruction font-orbitron">WHEN THE COMMAND LINE IS VISIBLE, START TYPING — NO CLICK NEEDED</p>
+    <p class="terminal-instruction desktop-only-hint font-orbitron">DESKTOP: WHEN THE COMMAND LINE IS VISIBLE, START TYPING — NO CLICK NEEDED</p>
+    <p class="terminal-instruction mobile-only-hint font-orbitron">PHONE: TAP THE COMMAND LINE TO OPEN YOUR KEYBOARD</p>
     <div class="bg-black border border-neonCyan/60 rounded-xl shadow-[0_0_30px_rgba(0,255,204,0.2)] overflow-hidden">
-      <div class="bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
+      <div class="terminal-topbar bg-cyberCard px-4 py-3 border-b border-neonCyan/30 flex items-center justify-between">
         <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div><span class="ml-4 text-xs text-gray-400 font-mono">vyom@vrs-cyber-terminal:<span id="term-path-head">~</span></span></div>
         <div class="text-xs text-neonCyan font-orbitron">BASH v5.2 Â· KALI</div>
       </div>
       <div id="terminal-body" class="p-6 font-mono text-sm h-80 overflow-y-auto space-y-2 text-neonCyan">
         <p class="text-gray-400">System initialization complete. Click <button type="button" data-help-link class="text-neonPink font-bold underline">help</button> to view available commands.</p>
       </div>
-      <div class="bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
+      <div class="terminal-command-row bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
         <span id="term-prompt" class="text-neonPink font-bold whitespace-nowrap">vyom@vrs:~$</span>
-        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type a command... or start typing while this terminal is visible" autocomplete="off" spellcheck="false">
+        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type a command... or start typing while this terminal is visible" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
         <button id="terminal-submit" class="px-4 py-1 rounded bg-neonCyan/20 text-neonCyan border border-neonCyan text-xs font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all">EXEC</button>
       </div>
     </div>
@@ -367,8 +391,17 @@ splash.addEventListener('click', () => {
 });
 
 // ===== Mobile menu =====
-document.getElementById('mobile-menu-btn').addEventListener('click', () => document.getElementById('mobile-menu').classList.toggle('hidden'));
-document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => document.getElementById('mobile-menu').classList.add('hidden')));
+const mobileMenuButton = document.getElementById('mobile-menu-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+function setMobileMenuOpen(open){
+  mobileMenu.classList.toggle('hidden', !open);
+  mobileMenuButton.setAttribute('aria-expanded', String(open));
+  mobileMenuButton.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+  mobileMenuButton.querySelector('i').classList.toggle('fa-bars', !open);
+  mobileMenuButton.querySelector('i').classList.toggle('fa-xmark', open);
+}
+mobileMenuButton.addEventListener('click', () => setMobileMenuOpen(mobileMenu.classList.contains('hidden')));
+document.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', () => setMobileMenuOpen(false)));
 
 // ===== Cert modal =====
 function openCertModal(t,d){ document.getElementById('modal-title').innerText=t; document.getElementById('modal-desc').innerText=d; document.getElementById('cert-modal').classList.remove('hidden'); }
