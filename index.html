@@ -89,6 +89,13 @@
   @media(prefers-reduced-motion:reduce){.signal-reveal,.signal-reveal.signal-visible{opacity:1;transform:none;filter:none;transition:none}.signal-reveal::after{display:none}}
   #main:not(.hidden){display:flex;flex-direction:column;min-height:100vh;}
   .site-footer{min-height:0;display:block;background:#05070a;padding-bottom:0!important;margin:auto 0 0!important;}
+  .visitor-trace{margin-bottom:1.25rem;padding:0 0 1rem;border-bottom:1px solid rgba(0,255,204,.18);color:#8fa3ab;font: .72rem/1.7 'Share Tech Mono',monospace;letter-spacing:.08em;}
+  .visitor-trace strong{display:block;margin-bottom:.25rem;color:#00ffcc;font:700 .72rem/1.5 'Orbitron',sans-serif;letter-spacing:.14em;}
+  .trace-sigil{display:block;width:min(100%,360px);height:auto;margin:.55rem auto 0;overflow:visible;}
+  .trace-track{fill:none;stroke:rgba(0,255,204,.24);stroke-width:1.5;stroke-dasharray:3 6;}
+  .trace-path{fill:none;stroke:#ff00ff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(255,0,255,.8));}
+  .trace-node{fill:#05070a;stroke:#00ffcc;stroke-width:1.8;transition:fill .25s ease,filter .25s ease,transform .25s ease;transform-box:fill-box;transform-origin:center;}
+  .trace-node.lit{fill:#00ffcc;filter:drop-shadow(0 0 6px #00ffcc);transform:scale(1.25);}
   @media(max-width:640px){
     #main nav{padding-left:1rem!important;padding-right:1rem!important;}
     #main>section{padding-left:1rem!important;padding-right:1rem!important;}
@@ -138,6 +145,7 @@
   <div class="row"><span>CPU</span><span class="bar"><i id="hud-cpu" style="width:40%"></i></span></div>
   <div class="row"><span>MEM</span><span class="bar"><i id="hud-mem" style="width:55%"></i></span></div>
   <div class="row"><span>UPTIME</span><span id="hud-time">00:00:00</span></div>
+  <div class="row"><span>TRACE</span><span id="trace-meter">0/5</span></div>
 </div>
 
 <div id="ctxmenu">
@@ -335,6 +343,7 @@
 
   <footer class="site-footer border-t border-neonCyan/30 py-8 px-6 text-center">
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="visitor-trace w-full md:w-auto" aria-live="polite" aria-atomic="true"><strong>YOUR SIGNAL TRACE · SESSION ONLY</strong><span id="trace-route">Explore the sections to build your route.</span><svg class="trace-sigil" viewBox="0 0 300 64" role="img" aria-label="A route sigil that lights up as you explore"><path class="trace-track" d="M18 38 L78 18 L138 38 L198 18 L258 38"/><path class="trace-path" id="trace-sigil-path" d=""/><circle class="trace-node" id="trace-node-hero" cx="18" cy="38" r="5"/><circle class="trace-node" id="trace-node-about" cx="78" cy="18" r="5"/><circle class="trace-node" id="trace-node-skills" cx="138" cy="38" r="5"/><circle class="trace-node" id="trace-node-goals" cx="198" cy="18" r="5"/><circle class="trace-node" id="trace-node-terminal" cx="258" cy="38" r="5"/></svg></div>
       <div class="text-gray-400 text-sm font-mono">&copy; 2026 Vyom Rupeshkumar Shah | Cyberpunk Portfolio</div>
       <div class="flex items-center gap-6"><a href="https://www.linkedin.com/in/vyom-shah-a7093a37b/" target="_blank" class="text-neonCyan hover:text-neonPink transition-colors flex items-center gap-2 text-sm font-orbitron"><i class="fa-brands fa-linkedin-in"></i> LinkedIn Profile</a></div>
     </div>
@@ -866,6 +875,29 @@ if('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-moti
     section.classList.add('signal-reveal');
     signalObserver.observe(section);
   });
+}
+
+// ===== Session-only visitor signal trail =====
+if('IntersectionObserver' in window){
+  const routeNames = {hero:'ENTRY',about:'ACADEMICS',skills:'SKILLS',goals:'GOALS',terminal:'CLI'};
+  const exploredRoute = [];
+  const exploredIds = [];
+  const routeCoords = {hero:[18,38],about:[78,18],skills:[138,38],goals:[198,18],terminal:[258,38]};
+  const traceRoute = document.getElementById('trace-route');
+  const tracePath = document.getElementById('trace-sigil-path');
+  const traceObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const sectionName = routeNames[entry.target.id];
+      if(entry.isIntersecting && sectionName && !exploredRoute.includes(sectionName)){
+        exploredRoute.push(sectionName);
+        exploredIds.push(entry.target.id);
+        document.getElementById(`trace-node-${entry.target.id}`)?.classList.add('lit');
+        tracePath.setAttribute('d', exploredIds.map((id,index) => `${index ? 'L' : 'M'}${routeCoords[id][0]} ${routeCoords[id][1]}`).join(' '));
+        traceRoute.textContent = `${exploredRoute.length === 5 ? 'FULL TRACE · ' : ''}${exploredRoute.join('  →  ')}`;
+      }
+    });
+  }, {threshold:0.1});
+  document.querySelectorAll('#hero,#about,#skills,#goals,#terminal').forEach(section => traceObserver.observe(section));
 }
 </script>
 </body>
