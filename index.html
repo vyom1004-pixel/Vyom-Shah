@@ -79,6 +79,7 @@
   .terminal-instruction{margin-bottom:1.25rem;font-size:clamp(.8rem,1.3vw,1.15rem);}
   .desktop-only-hint{display:block;}
   .mobile-only-hint{display:none;}
+  #mobile-menu-btn{min-width:44px;min-height:44px;}
   .splash-cta{max-width:100%;padding:.9rem clamp(1rem,5vw,2rem);border-radius:12px;font-size:clamp(.62rem,2vw,.82rem);letter-spacing:.12em;box-shadow:0 0 26px rgba(0,255,204,.18);}
   @media(max-width:420px){.splash-kicker{font-size:.56rem;letter-spacing:.12em;padding:.55rem .75rem}.splash-name{letter-spacing:-.055em}}
   .signal-reveal{position:relative;opacity:0;transform:translateY(28px) scale(.99);filter:blur(5px);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.75,.25,1),filter .75s ease;}
@@ -96,25 +97,45 @@
   .trace-path{fill:none;stroke:#ff00ff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 4px rgba(255,0,255,.8));}
   .trace-node{fill:#05070a;stroke:#00ffcc;stroke-width:1.8;transition:fill .25s ease,filter .25s ease,transform .25s ease;transform-box:fill-box;transform-origin:center;}
   .trace-node.lit{fill:#00ffcc;filter:drop-shadow(0 0 6px #00ffcc);transform:scale(1.25);}
-  @media(max-width:640px){
-    #main nav{padding-left:1rem!important;padding-right:1rem!important;}
-    #main>section{padding-left:1rem!important;padding-right:1rem!important;}
-    #hero{padding-top:3.5rem!important;padding-bottom:3.5rem!important;}
-    .hero-status{max-width:100%;white-space:normal;font-size:.62rem;line-height:1.5;letter-spacing:.04em;}
-    .hero-actions{flex-direction:column;align-items:stretch;}
-    .hero-actions a{width:100%;padding:.8rem 1rem!important;text-align:center;font-size:.72rem;}
-    #main section>.flex>h2{font-size:clamp(1rem,4.6vw,1.35rem);gap:.45rem;line-height:1.35;}
-    .terminal-instruction{width:100%;padding:.75rem .8rem;font-size:clamp(.72rem,3vw,.95rem);letter-spacing:.06em;line-height:1.5;border-radius:12px;}
-    .mobile-only-hint{display:block;margin:.25rem auto 1rem;color:#ff8cff;font:600 .68rem/1.5 'Share Tech Mono',monospace;letter-spacing:.06em;text-align:center;}
+  @media (hover:none), (pointer:coarse), (max-width:767px){
     .desktop-only-hint{display:none!important;}
+    .mobile-only-hint{display:block;margin:.25rem auto 1rem;color:#ff8cff;font:600 .7rem/1.55 'Share Tech Mono',monospace;letter-spacing:.04em;text-align:center;}
+  }
+  @media (hover:none) and (pointer:coarse){
+    .group:hover .hover\:-translate-y-2{transform:none;}
+    .glitch-hover:hover{animation:none;}
+  }
+  @media(max-width:640px){
+    #main nav{padding: max(.65rem,env(safe-area-inset-top)) 1rem .65rem!important;}
+    #main>section{padding-left:1rem!important;padding-right:1rem!important;}
+    #hero{padding-top:clamp(2.5rem,9vh,3.5rem)!important;padding-bottom:clamp(2.5rem,9vh,3.5rem)!important;}
+    .hero-status{max-width:100%;white-space:normal;font-size:.62rem;line-height:1.5;letter-spacing:.04em;}
+    #hero>p.text-xl{font-size:clamp(.9rem,4.4vw,1.25rem);line-height:1.55;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions a{width:100%;min-height:48px;padding:.8rem 1rem!important;text-align:center;font-size:.72rem;}
+    #main section>.flex>h2{font-size:clamp(1rem,4.6vw,1.35rem);gap:.45rem;line-height:1.35;}
+    .terminal-instruction{width:100%;padding:.75rem .8rem;font-size:clamp(.72rem,3vw,.95rem);letter-spacing:.04em;line-height:1.5;border-radius:12px;}
     .terminal-topbar{flex-wrap:wrap;gap:.5rem;}
     .terminal-command-row{gap:.5rem!important;padding:.75rem!important;}
     #term-prompt{font-size:.68rem;}
-    #terminal-input{min-width:0;font-size:.8rem;}
-    #terminal-submit{padding-left:.7rem!important;padding-right:.7rem!important;}
+    #terminal-input{min-width:0;font-size:16px;}
+    #terminal-submit{min-width:48px;min-height:44px;padding-left:.7rem!important;padding-right:.7rem!important;}
     #terminal-body{padding:1rem!important;}
     .site-footer{padding-left:1rem!important;padding-right:1rem!important;}
+    .site-footer>div{gap:1rem!important;padding-bottom:max(.5rem,env(safe-area-inset-bottom));}
     .site-footer>div>div:first-child{font-size:.7rem;line-height:1.7;}
+    .visitor-trace{font-size:.68rem;overflow-wrap:anywhere;}
+    .visitor-trace strong{font-size:.64rem;}
+    #ctxmenu{display:none!important;}
+  }
+  @media(max-width:380px){
+    .terminal-command-row{gap:.35rem!important;padding:.65rem!important;}
+    #term-prompt{font-size:.58rem;letter-spacing:-.04em;}
+    #terminal-submit{font-size:.6rem;padding-inline:.55rem!important;}
+    .terminal-topbar>div:first-child{min-width:0;}
+    .terminal-topbar>div:first-child>span{margin-left:.35rem!important;font-size:.62rem;overflow-wrap:anywhere;}
+    #main section>.flex{gap:.35rem!important;}
+    #main section>.flex>h2{font-size:1rem;letter-spacing:.03em;}
   }
   /* ---- decrypt text ---- */
   .decrypt{display:inline-block;}
@@ -217,7 +238,7 @@
       <a href="#skills" class="px-8 py-3 rounded-lg bg-neonCyan text-cyberDark font-orbitron font-bold tracking-wider hover:bg-white hover:shadow-neon-cyan transition-all duration-300">EXPLORE CREDENTIALS</a>
       <a href="#terminal" class="px-8 py-3 rounded-lg bg-cyberCard border border-neonPink text-neonPink font-orbitron font-bold tracking-wider hover:bg-neonPink hover:text-cyberDark hover:shadow-neon-pink transition-all duration-300">LAUNCH CLI INTERFACE</a>
     </div>
-    <p class="mt-6 text-[11px] text-gray-500 font-mono">psst â€” try the â†‘ â†‘ â†“ â†“ â† â†’ â† â†’ B A konami sequence, or right-click anywhere.</p>
+    <p class="mt-6 text-[11px] text-gray-500 font-mono desktop-only-hint">psst â€” try the â†‘ â†‘ â†“ â†“ â† â†’ â† â†’ B A konami sequence, or right-click anywhere.</p>
   </header>
 
   <section id="about" class="py-16 px-6 max-w-5xl mx-auto">
@@ -323,7 +344,7 @@
       </div>
       <div class="terminal-command-row bg-cyberCard/50 px-6 py-3 border-t border-neonCyan/30 flex items-center gap-3">
         <span id="term-prompt" class="text-neonPink font-bold whitespace-nowrap">vyom@vrs:~$</span>
-        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Type a command... or start typing while this terminal is visible" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go">
+        <input type="text" id="terminal-input" class="bg-transparent border-none outline-none w-full text-white font-mono text-sm cursor-blink" placeholder="Enter a command..." aria-label="Enter a terminal command" autocomplete="off" autocapitalize="off" spellcheck="false" enterkeyhint="go" inputmode="text">
         <button id="terminal-submit" class="px-4 py-1 rounded bg-neonCyan/20 text-neonCyan border border-neonCyan text-xs font-orbitron hover:bg-neonCyan hover:text-cyberDark transition-all">EXEC</button>
       </div>
     </div>
@@ -827,6 +848,7 @@ document.addEventListener('keydown', e => {
   if((e.ctrlKey || e.metaKey) && ['c','x'].includes(e.key.toLowerCase())) e.preventDefault();
 });
 document.addEventListener('contextmenu', e => {
+  if(matchMedia('(hover: none), (pointer: coarse), (max-width: 767px)').matches) return;
   e.preventDefault();
   ctxmenu.style.display = 'block';
   ctxmenu.style.left = Math.min(e.clientX, innerWidth-230)+'px';
